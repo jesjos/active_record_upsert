@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
 require "bundler/setup"
+require 'active_record'
+require 'active_record/connection_adapters/postgresql_adapter'
 require "active_record_upsert"
 
 # You can add fixtures and/or initialization code here to make experimenting

@@ -9,9 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Jesper Josefsson"]
   spec.email         = ["jesper.josefsson@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{PG Upsert for AR}
 
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
@@ -28,6 +26,16 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "activerecord", "~> 5.0.0.beta2"
   spec.add_runtime_dependency "arel", "~>7.0"
+
+  if defined?(JRUBY_VERSION)
+    spec.platform = 'java'
+    spec.add_runtime_dependency 'activerecord-jdbcpostgresql-adapter', '> 0'
+  else
+    spec.platform = Gem::Platform::RUBY
+    spec.add_runtime_dependency 'pg', '> 0'
+  end
+
+
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
