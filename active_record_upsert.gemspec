@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = ActiveRecordUpsert::VERSION
   spec.authors       = ["Jesper Josefsson"]
   spec.email         = ["jesper.josefsson@gmail.com"]
+  spec.homepage      = "https://github.com/jesjos/active_record_upsert/"
 
   spec.summary       = %q{PG Upsert for AR}
 
