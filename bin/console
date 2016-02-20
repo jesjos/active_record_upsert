@@ -4,6 +4,8 @@ require "bundler/setup"
 require 'active_record'
 require 'active_record/connection_adapters/postgresql_adapter'
 require "active_record_upsert"
+require File.join(__dir__, '../spec/setup')
+ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
