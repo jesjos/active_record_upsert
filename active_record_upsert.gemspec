@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["jesper.josefsson@gmail.com"]
   spec.homepage      = "https://github.com/jesjos/active_record_upsert/"
 
-  spec.summary       = %q{Real PostgreSQL upserts using ON CONFLICT for ActiveRecord}
+  spec.summary       = %q{Real PostgreSQL 9.5+ upserts using ON CONFLICT for ActiveRecord}
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
