@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
     spec.add_runtime_dependency 'activerecord-jdbcpostgresql-adapter', '> 0'
   else
     spec.platform = Gem::Platform::RUBY
-    spec.add_runtime_dependency 'pg', '> 0'
+    spec.add_runtime_dependency 'pg', '~> 0.18'
   end
 
   spec.add_development_dependency "bundler", "~> 1.11"
