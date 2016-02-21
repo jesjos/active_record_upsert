@@ -3,7 +3,7 @@
 
 # ActiveRecordUpsert
 
-Real upsert for PostgreSQL 9.5+ and ActiveRecord. Uses ON CONFLICT DO UPDATE.
+Real upsert for PostgreSQL 9.5+ and ActiveRecord. Uses [ON CONFLICT DO UPDATE](http://www.postgresql.org/docs/9.5/static/sql-insert.html).
 
 ## Main points
 
