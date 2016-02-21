@@ -6,8 +6,10 @@ ActiveRecord::Base.establish_connection(
 unless ActiveRecord::Base.connection.table_exists?(:my_records)
   ActiveRecord::Base.connection.create_table(:my_records) do |t|
     t.string :name
+    t.integer :wisdom
     t.timestamps
   end
+  ActiveRecord::Base.connection.add_index :my_records, :wisdom, unique: true
 end
 
 class MyRecord < ActiveRecord::Base
@@ -15,6 +17,7 @@ class MyRecord < ActiveRecord::Base
   after_save :after_s
   before_create :before_c
   after_create :after_c
+  after_commit :after_com
 
   def before_s
   end
@@ -26,5 +29,8 @@ class MyRecord < ActiveRecord::Base
   end
 
   def after_c
+  end
+
+  def after_com
   end
 end

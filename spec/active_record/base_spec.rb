@@ -2,11 +2,12 @@ module ActiveRecord
   describe Base do
     describe '#upsert' do
       let(:record) { MyRecord.new(id: 'some_id') }
-      it 'calls save/create callbacks' do
+      it 'calls save/create/commit callbacks' do
         expect(record).to receive(:before_s)
         expect(record).to receive(:after_s)
         expect(record).to receive(:after_c)
         expect(record).to receive(:before_c)
+        expect(record).to receive(:after_com)
         record.upsert
       end
 
