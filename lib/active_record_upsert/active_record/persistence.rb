@@ -3,7 +3,8 @@ module ActiveRecordUpsert
     module PersistenceExtensions
 
       def upsert
-        raise ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
+        raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
+        raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
         values = run_callbacks(:save) {
           run_callbacks(:create) {
             _upsert_record

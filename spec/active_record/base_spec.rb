@@ -30,8 +30,15 @@ module ActiveRecord
         it 'loads the data from the db' do
           upserted = MyRecord.new(id: key)
           upserted.upsert
-          puts upserted.attributes
           expect(upserted.name).to eq('somename')
+        end
+      end
+
+      context 'when the record is not new' do
+        it 'raises an error' do
+          record = MyRecord.create(name: 'somename')
+          record.save
+          expect { record.upsert }.to raise_error(RecordSavedError)
         end
       end
     end
