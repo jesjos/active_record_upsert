@@ -42,6 +42,14 @@ module ActiveRecord
           expect { record.upsert }.to raise_error(RecordSavedError)
         end
       end
+
+      context 'when another index violation is made' do
+        it 'raises an error' do
+          record = MyRecord.create(name: 'somename', wisdom: 1)
+          MyRecord.create(name: 'other', wisdom: 2)
+          expect { MyRecord.upsert(id: record.id, wisdom: 2) }.to raise_error(ActiveRecord::RecordNotUnique)
+        end
+      end
     end
   end
 end
