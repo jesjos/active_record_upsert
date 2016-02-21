@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/jesjos/active_record_upsert.svg?branch=master)](https://travis-ci.org/jesjos/active_record_upsert)
+[![Code Climate](https://codeclimate.com/github/jesjos/active_record_upsert/badges/gpa.svg)](https://codeclimate.com/github/jesjos/active_record_upsert)
+
 # ActiveRecordUpsert
 
 Real upsert for PostgreSQL 9.5+ and ActiveRecord. Uses ON CONFLICT DO UPDATE.
