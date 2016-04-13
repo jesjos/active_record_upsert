@@ -35,7 +35,5 @@ module ActiveRecordUpsert
           binds + on_conflict_binds)
       end
     end
-
-    ::ActiveRecord::Relation.include(RelationExtensions)
   end
 end

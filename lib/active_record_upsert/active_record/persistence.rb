@@ -33,8 +33,5 @@ module ActiveRecordUpsert
         end
       end
     end
-
-    ::ActiveRecord::Base.prepend(PersistenceExtensions)
-    ::ActiveRecord::Base.extend(PersistenceExtensions::ClassMethods)
   end
 end

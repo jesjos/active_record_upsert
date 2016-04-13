@@ -16,7 +16,5 @@ module ActiveRecordUpsert
         super
       end
     end
-
-    ::ActiveRecord::Base.prepend(TimestampExtensions)
   end
 end
