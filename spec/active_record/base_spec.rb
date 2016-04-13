@@ -11,6 +11,14 @@ module ActiveRecord
         record.upsert
       end
 
+      context 'when the record does not exist' do
+        it 'sets created at' do
+          record.upsert
+          expect(record.created_at).not_to be_nil
+          expect(record.updated_at).not_to be_nil
+        end
+      end
+
       context 'when the record already exists' do
         let(:key) { 1 }
         before { MyRecord.create(id: key, name: 'somename') }

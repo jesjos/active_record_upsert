@@ -7,7 +7,5 @@ module ActiveRecordUpsert
         end
       end
     end
-
-    ::ActiveRecord::Base.prepend(TransactionsExtensions)
   end
 end
