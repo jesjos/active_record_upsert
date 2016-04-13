@@ -16,9 +16,6 @@ module ActiveRecordUpsert
             [sql, binds, pk, sequence_name]
           end
         end
-
-        # ::ActiveRecord::ConnectionAdapters::DatabaseStatements.include(DatabaseStatementsExtensions)
-        ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.include(DatabaseStatementsExtensions)
       end
     end
   end
