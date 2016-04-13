@@ -3,7 +3,7 @@ ActiveRecord::Base.establish_connection(
   database: 'upsert_test'
 )
 
-unless ActiveRecord::Base.connection.table_exists?(:my_records)
+unless ActiveRecord::Base.connection.data_source_exists?(:my_records)
   ActiveRecord::Base.connection.create_table(:my_records) do |t|
     t.string :name
     t.integer :wisdom
