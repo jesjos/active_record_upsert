@@ -12,7 +12,7 @@ module ActiveRecord
       end
 
       context 'when the record does not exist' do
-        it 'sets created at' do
+        it 'sets timestamps' do
           record.upsert
           expect(record.created_at).not_to be_nil
           expect(record.updated_at).not_to be_nil
