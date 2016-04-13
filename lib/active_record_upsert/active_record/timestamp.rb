@@ -1,7 +1,7 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module TimestampExtensions
-      def _upsert_record
+      def _upsert_record(*args)
         if self.record_timestamps
           current_time = current_time_from_proper_timezone
 
