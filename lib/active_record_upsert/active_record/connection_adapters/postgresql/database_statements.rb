@@ -12,8 +12,6 @@ module ActiveRecordUpsert
             exec_query(sql, name, binds)
           end
         end
-
-        ::ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.include(DatabaseStatementsExtensions)
       end
     end
   end
