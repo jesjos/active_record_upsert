@@ -7,4 +7,4 @@
 /pkg/
 /spec/reports/
 /tmp/
-spec/dummy/log/*.log
+/spec/dummy/log/*.log

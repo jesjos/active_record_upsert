@@ -4,7 +4,7 @@ require "active_record"
 RSpec::Core::RakeTask.new(:spec)
 
 task :setup_and_run_spec do |rake_task|
-  puts "<Rake task #{rake_task.name}> Ensuring database is prepared..."
+  puts "<:#{rake_task.name}> Ensuring database is prepared..."
   
   # Configure Rails Environment
   ENV['RAILS_ENV'] = 'test'
