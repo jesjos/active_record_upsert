@@ -5,3 +5,4 @@ module Minitest
     end
   end
 end
+
