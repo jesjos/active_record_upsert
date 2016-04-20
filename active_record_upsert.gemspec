@@ -6,8 +6,8 @@ require 'active_record_upsert/version'
 Gem::Specification.new do |spec|
   spec.name          = "active_record_upsert"
   spec.version       = ActiveRecordUpsert::VERSION
-  spec.authors       = ["Jesper Josefsson"]
-  spec.email         = ["jesper.josefsson@gmail.com"]
+  spec.authors       = ["Jesper Josefsson", "Olle Jonsson"]
+  spec.email         = ["jesper.josefsson@gmail.com", "olle.jonsson@gmail.com"]
   spec.homepage      = "https://github.com/jesjos/active_record_upsert/"
 
   spec.summary       = %q{Real PostgreSQL 9.5+ upserts using ON CONFLICT for ActiveRecord}
