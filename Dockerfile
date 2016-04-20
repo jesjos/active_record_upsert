@@ -4,6 +4,7 @@ RUN apt-get update
 RUN apt-get install ruby2.3 ruby2.3-dev
 RUN ruby --version
  
+ENV BUNDLE_GEMFILE=/app/Gemfile.docker
 RUN gem install nokogiri
 RUN gem install bundler
 COPY Gemfile* *.gemspec /app/
