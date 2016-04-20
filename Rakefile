@@ -3,23 +3,20 @@ require "rspec/core/rake_task"
 require "active_record"
 RSpec::Core::RakeTask.new(:spec)
 
-task :setup_and_run_spec do |t|
-  puts t.name
-  puts 'Ensure database is prepped.'
+task :setup_and_run_spec do |rake_task|
+  puts "<:#{rake_task.name}> Ensuring database is prepared..."
   
-  ActiveRecord::Base.establish_connection(
-    adapter: 'postgresql',
-    database: 'upsert_test'
-  )
-  
-  unless ActiveRecord::Base.connection.data_source_exists?(:my_records)
-    ActiveRecord::Base.connection.create_table(:my_records) do |t|
-      t.string :name
-      t.integer :wisdom
-      t.timestamps
-    end
-    ActiveRecord::Base.connection.add_index :my_records, :wisdom, unique: true
-  end
+  # Configure Rails Environment
+  ENV['RAILS_ENV'] = 'test'
+  ENV['DATABASE_URL'] ||= 'postgresql://localhost/upsert_test'
+
+  require File.expand_path('../spec/dummy/config/environment.rb', __FILE__)
+
+  include ActiveRecord::Tasks
+  DatabaseTasks.db_dir = 'spec/dummy/db'
+  DatabaseTasks.drop_current
+  DatabaseTasks.create_current
+  DatabaseTasks.migrate
 
   Rake::Task['spec'].invoke
 end
