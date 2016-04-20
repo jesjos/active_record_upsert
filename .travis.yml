@@ -22,7 +22,7 @@ before_script:
   - sudo sh -c 'echo "local all travis trust" >> /etc/postgresql/9.5/main/pg_hba.conf'
   - sudo /etc/init.d/postgresql restart
   - psql --version
-  - createuser --echo -U postgres travis
+  - createuser --echo -U postgres --createdb travis
   - createdb --echo -U postgres --owner "travis" upsert_test
 
 before_install: gem install bundler -v 1.11.2
