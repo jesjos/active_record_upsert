@@ -1,0 +1,14 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.5
+    ports:
+      - "5432:5432"
+  app:
+    environment:
+      - DATABASE_URL=postgresql://postgres@db/active_record_upsert_test
+    build: .
+    depends_on:
+      - db
+    links:
+      - db
