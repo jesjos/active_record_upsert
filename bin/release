@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+OUR_RUBY=2.2.3,jruby-9.0.5.0
+
+rvm $OUR_RUBY do bundle check
+rvm $OUR_RUBY do bundle exec rake release 
+
