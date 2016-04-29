@@ -1,6 +1,6 @@
-require "bundler/gem_tasks"
-require "rspec/core/rake_task"
-require "active_record"
+require 'bundler/gem_tasks'
+require 'rspec/core/rake_task'
+require 'active_record'
 RSpec::Core::RakeTask.new(:spec)
 
 task :setup_and_run_spec do |rake_task|
