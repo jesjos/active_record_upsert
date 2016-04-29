@@ -17,16 +17,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'activerecord', '> 5', '< 6'
+  spec.add_runtime_dependency 'activerecord', '~> 5.0.0.beta4'
   spec.add_runtime_dependency "arel", "~>7.0"
 
-  if defined?(JRUBY_VERSION)
-    spec.platform = 'java'
-    spec.add_runtime_dependency 'activerecord-jdbcpostgresql-adapter', '> 0'
-  else
-    spec.platform = Gem::Platform::RUBY
-    spec.add_runtime_dependency 'pg', '~> 0.18'
-  end
+  spec.platform = Gem::Platform::RUBY
+  spec.add_runtime_dependency 'pg', '~> 0.18'
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
