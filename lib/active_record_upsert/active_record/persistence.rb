@@ -31,6 +31,13 @@ module ActiveRecordUpsert
             new(attributes, &block).upsert
           end
         end
+        def upsert_by(*keys)
+          keys = keys.first if keys.size == 1 # support single string/symbol, multiple string/symbols, and array
+          @_upsert_keys = Array(keys).map(&:to_s)
+        end
+        def _upsert_keys
+          @_upsert_keys
+        end
       end
     end
   end

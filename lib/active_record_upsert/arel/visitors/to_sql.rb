@@ -13,7 +13,7 @@ module ActiveRecordUpsert
 
         def visit_Arel_Nodes_OnConflict o, collector
           collector << "ON CONFLICT "
-          collector << " (#{quote_column_name o.target.name}) "
+          collector << " (#{quote_column_name o.target.name}) ".gsub(',', '","')
           maybe_visit o.action, collector
         end
 
