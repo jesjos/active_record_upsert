@@ -42,6 +42,50 @@ module ActiveRecord
           expect(upserted.wheels_count).to eq(1)
         end
       end
+      context 'different ways of setting keys' do
+        let(:attrs) { {make: 'Ford', name: 'Focus'} }
+        before { Vehicle.create(attrs) }
+        it 'works with multiple symbol args' do
+          Vehicle.upsert_keys :make, :name
+          upserted = Vehicle.new(**attrs, wheels_count: 1)
+          upserted.upsert
+          expect(upserted.wheels_count).to eq(1)
+        end
+        it 'works with multiple string args' do
+          Vehicle.upsert_keys 'make', 'name'
+          upserted = Vehicle.new(**attrs, wheels_count: 1)
+          upserted.upsert
+          expect(upserted.wheels_count).to eq(1)
+        end
+        it 'works with array of symbols' do
+          Vehicle.upsert_keys [:make, :name]
+          upserted = Vehicle.new(**attrs, wheels_count: 1)
+          upserted.upsert
+          expect(upserted.wheels_count).to eq(1)
+        end
+        it 'works with array of strings' do
+          Vehicle.upsert_keys ['make', 'name']
+          upserted = Vehicle.new(**attrs, wheels_count: 1)
+          upserted.upsert
+          expect(upserted.wheels_count).to eq(1)
+        end
+        it 'works with a single symbol' do
+          v = Vehicle.create
+          Vehicle.upsert_keys :id
+          upserted = Vehicle.new(id: v.id, wheels_count: 1)
+          upserted.upsert
+          expect(upserted.wheels_count).to eq(1)
+          expect(upserted.id).to eq(v.id)
+        end
+        it 'works with a single string' do
+          v = Vehicle.create
+          Vehicle.upsert_keys 'id'
+          upserted = Vehicle.new(id: v.id, wheels_count: 1)
+          upserted.upsert
+          expect(upserted.wheels_count).to eq(1)
+          expect(upserted.id).to eq(v.id)
+        end
+      end
 
       context 'when the record is not new' do
         let(:attrs) { {make: 'Ford', name: 'Focus'} }
