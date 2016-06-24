@@ -61,7 +61,7 @@ Also, it's possible to specify which columns should be used for the conflict cla
 
 ```
 class Vehicle < ActiveRecord::Base
-  upsert_by [:make, :name]
+  upsert_keys [:make, :name]
 end
 
 Vehicle.upsert(make: 'Ford', name: 'F-150', doors: 4)

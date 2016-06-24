@@ -1,5 +1,5 @@
 class Vehicle < ApplicationRecord
-  upsert_by :make, :name
+  upsert_keys [:make, :name]
 
   before_save :before_s
   after_save :after_s

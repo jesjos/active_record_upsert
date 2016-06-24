@@ -14,7 +14,7 @@ module ActiveRecordUpsert
         im.into arel_table
 
         substitutes, binds = substitute_values values
-        column_arr = self.klass._upsert_keys || [primary_key]
+        column_arr = self.klass.upsert_keys || [primary_key]
         column_name = column_arr.join(',')
 
         cm = arel_table.create_on_conflict_do_update
