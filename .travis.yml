@@ -1,4 +1,5 @@
 sudo: required
+dist: trusty
 language: ruby
 env:
   - DATABASE_URL="postgresql://postgres@localhost/upsert_test"
