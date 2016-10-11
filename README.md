@@ -18,7 +18,8 @@ Real upsert for PostgreSQL 9.5+ and Rails 5 / ActiveRecord 5. Uses [ON CONFLICT 
 - PostgreSQL 9.5+
 - ActiveRecord ~> 5
 - For MRI: pg
-- For JRuby: You need to use a fork of `activerecord-jdbcpostgresql-adapter`
+
+- For JRuby: No support
 
 ## Installation
 
@@ -26,20 +27,6 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'active_record_upsert'
-```
-
-If you use JRuby, also add the following:
-
-```ruby
-gem 'activerecord-jdbc-adapter',
-    github: 'jensnockert/activerecord-jdbc-adapter',
-    branch: 'activerecord-50',
-    platform: :jruby
-
-gem 'activerecord-jdbcpostgresql-adapter',
-    github: 'jensnockert/activerecord-jdbc-adapter',
-    branch: 'activerecord-50',
-    platform: :jruby
 ```
 
 And then execute:
