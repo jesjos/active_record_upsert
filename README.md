@@ -57,6 +57,17 @@ r.upsert
 => #<MyRecord id: 2, name: "bar", created_at: "2016-02-20 14:17:50", updated_at: "2016-02-20 14:18:49", wisdom: 3>
 ```
 
+## Tests
+
+Make sure to have an upsert_test database:
+
+```shell
+DATABASE_URL=postgresql://localhost/upsert_test RAILS_ENV=test bundle exec bin/rails db:environment:set RAILS_ENV=test
+DATABASE_URL=postgresql://localhost/upsert_test RAILS_ENV=test bundle exec rake db:create db:migrate
+```
+
+Then run `rspec`.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos/active_record_upsert.
