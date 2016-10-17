@@ -62,8 +62,7 @@ r.upsert
 Make sure to have an upsert_test database:
 
 ```shell
-DATABASE_URL=postgresql://localhost/upsert_test RAILS_ENV=test bundle exec bin/rails db:environment:set RAILS_ENV=test
-DATABASE_URL=postgresql://localhost/upsert_test RAILS_ENV=test bundle exec rake db:create db:migrate
+bin/run_rails.sh db:create db:migrate DATABASE_URL=postgresql://localhost/upsert_test
 ```
 
 Then run `rspec`.
