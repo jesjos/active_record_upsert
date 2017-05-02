@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.platform = Gem::Platform::RUBY
 
-  spec.add_runtime_dependency 'activerecord', '>= 5.0', '< 5.1'
-  spec.add_runtime_dependency "arel", "~>7.0"
+  spec.add_runtime_dependency 'activerecord', '~> 5.1'
+  spec.add_runtime_dependency "arel", "~>8.0"
   spec.add_runtime_dependency 'pg', '~> 0.18'
 end
