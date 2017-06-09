@@ -9,5 +9,5 @@ group :development, :test do
   gem 'rspec', '>= 3.0', '< 4'
   gem 'pry', '> 0'
   gem 'database_cleaner', '~> 1.5.3'
-  gem 'rails', '>= 5.0', '< 5.1'
+  gem 'rails', '>= 5.0', '< 5.1.1'
 end
