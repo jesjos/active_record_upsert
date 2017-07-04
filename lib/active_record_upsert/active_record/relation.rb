@@ -14,11 +14,13 @@ module ActiveRecordUpsert
         im.into arel_table
 
         substitutes, binds = substitute_values values
+        column_arr = self.klass.upsert_keys || [primary_key]
+        column_name = column_arr.join(',')
 
         cm = arel_table.create_on_conflict_do_update
-        cm.target = arel_table[primary_key]
+        cm.target = arel_table[column_name]
+        filter = ->(o) { [*column_arr, 'created_at'].include?(o.name) }
 
-        filter = ->(o) { [primary_key, 'created_at'].include?(o.name) }
         cm.set(substitutes.reject { |s| filter.call(s.first) })
         on_conflict_binds = binds.reject(&filter)
 
@@ -29,8 +31,8 @@ module ActiveRecordUpsert
         @klass.connection.upsert(
           im,
           'SQL',
-          primary_key,
-          primary_key_value,
+          primary_key,       # not used
+          primary_key_value, # not used
           nil,
           binds + on_conflict_binds)
       end
