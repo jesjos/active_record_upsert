@@ -1,10 +1,3 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 9.5.4
--- Dumped by pg_dump version 9.5.4
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
@@ -177,6 +170,8 @@ CREATE UNIQUE INDEX index_my_records_on_wisdom ON my_records USING btree (wisdom
 
 SET search_path TO "$user", public;
 
-INSERT INTO schema_migrations (version) VALUES ('20160419103547'), ('20160419124138');
+INSERT INTO "schema_migrations" (version) VALUES
+('20160419103547'),
+('20160419124138');
 
 
