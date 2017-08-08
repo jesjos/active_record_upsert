@@ -45,7 +45,7 @@ module ActiveRecord
         context 'when specifying attributes' do
           it 'sets all the specified attributes' do
             upserted = MyRecord.new(id: key)
-            upserted.upsert([:id, :name])
+            upserted.upsert(attributes: [:id, :name])
             expect(upserted.name).to eq(nil)
           end
         end
@@ -64,12 +64,26 @@ module ActiveRecord
       context 'when the record already exists' do
         let(:key) { 1 }
         let(:attributes) { {id: key, name: 'othername', wisdom: nil} }
-        before { MyRecord.create(id: key, name: 'somename', wisdom: 2) }
+        let!(:existing) { MyRecord.create(id: key, name: 'somename', wisdom: 2) }
 
         it 'updates all passed attributes' do
           record = MyRecord.upsert(attributes)
           expect(record.name).to eq(attributes[:name])
           expect(record.wisdom).to eq(attributes[:wisdom])
+        end
+
+        context 'with conditions' do
+          it 'does not update the record if the condition does not match' do
+            expect {
+              MyRecord.upsert(attributes, where: [MyRecord.arel_table[:wisdom].gt(3)])
+            }.to_not change { existing.reload.wisdom }
+          end
+
+          it 'updates the record if the condition matches' do
+            expect {
+              MyRecord.upsert(attributes, where: [MyRecord.arel_table[:wisdom].lt(3)])
+            }.to change { existing.reload.wisdom }.to(nil)
+          end
         end
       end
 

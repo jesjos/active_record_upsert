@@ -57,6 +57,12 @@ r.upsert
 => #<MyRecord id: 1, name: "bar", created_at: "2016-02-20 14:15:55", updated_at: "2016-02-20 14:18:49", wisdom: 3>
 ```
 
+If you need to specify conditions for the update, pass them as Arel queries:
+
+```
+MyRecord.upsert({id: 1, wisdom: 3}, where: [MyRecord.arel_table[:updated_at].lt(1.day.ago)])
+```
+
 Also, it's possible to specify which columns should be used for the conflict clause. **These must comprise a unique index in Postgres.**
 
 ```
