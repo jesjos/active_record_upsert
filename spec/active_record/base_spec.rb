@@ -41,6 +41,14 @@ module ActiveRecord
           upserted.upsert
           expect(upserted.name).to eq('somename')
         end
+
+        context 'when specifying attributes' do
+          it 'sets all the specified attributes' do
+            upserted = MyRecord.new(id: key)
+            upserted.upsert([:id, :name])
+            expect(upserted.name).to eq(nil)
+          end
+        end
       end
 
       context 'when the record is not new' do
@@ -48,6 +56,20 @@ module ActiveRecord
           record = MyRecord.create(name: 'somename')
           record.save
           expect { record.upsert }.to raise_error(RecordSavedError)
+        end
+      end
+    end
+
+    describe '.upsert' do
+      context 'when the record already exists' do
+        let(:key) { 1 }
+        let(:attributes) { {id: key, name: 'othername', wisdom: nil} }
+        before { MyRecord.create(id: key, name: 'somename', wisdom: 2) }
+
+        it 'updates all passed attributes' do
+          record = MyRecord.upsert(attributes)
+          expect(record.name).to eq(attributes[:name])
+          expect(record.wisdom).to eq(attributes[:wisdom])
         end
       end
 

@@ -2,12 +2,14 @@ module ActiveRecordUpsert
   module ActiveRecord
     module PersistenceExtensions
 
-      def upsert
+      def upsert(attribute_names=nil)
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
         values = run_callbacks(:save) {
           run_callbacks(:create) {
-            _upsert_record
+            attribute_names ||= changed
+            attribute_names = attribute_names.map(&:to_s) + ['created_at', 'updated_at']
+            _upsert_record(attribute_names)
           }
         }
         assign_attributes(values.first.to_h)
@@ -28,7 +30,7 @@ module ActiveRecordUpsert
           if attributes.is_a?(Array)
             attributes.collect { |hash| upsert(hash, &block) }
           else
-            new(attributes, &block).upsert
+            new(attributes, &block).upsert(attributes.keys)
           end
         end
         def upsert_keys(*keys)
