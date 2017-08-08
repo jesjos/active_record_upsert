@@ -58,6 +58,18 @@ module ActiveRecord
           expect { record.upsert }.to raise_error(RecordSavedError)
         end
       end
+
+      context 'with validation' do
+        it 'does not upsert if the object is invalid' do
+          record = Vehicle.new(wheels_count: 4)
+          expect { record.upsert }.to_not change{ Vehicle.count }
+        end
+
+        it 'saves the object if validate: false is passed' do
+          record = Vehicle.new(wheels_count: 4)
+          expect { record.upsert(validate: false) }.to change{ Vehicle.count }.by(1)
+        end
+      end
     end
 
     describe '.upsert' do

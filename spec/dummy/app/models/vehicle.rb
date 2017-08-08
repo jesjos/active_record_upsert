@@ -7,6 +7,8 @@ class Vehicle < ApplicationRecord
   after_create :after_c
   after_commit :after_com
 
+  validates :name, presence: true
+
   def before_s
   end
 
