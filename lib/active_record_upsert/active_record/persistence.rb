@@ -2,7 +2,7 @@ module ActiveRecordUpsert
   module ActiveRecord
     module PersistenceExtensions
 
-      def upsert(attributes: nil, arel_condition: nil, validate: true)
+      def upsert!(attributes: nil, arel_condition: nil, validate: true)
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
         validate == false || perform_validations || raise_validation_error
@@ -17,6 +17,10 @@ module ActiveRecordUpsert
         }
         assign_attributes(values.first.to_h)
         self
+      end
+
+      def upsert(*args)
+        upsert!(*args)
       rescue ::ActiveRecord::RecordInvalid
         false
       end
@@ -29,15 +33,22 @@ module ActiveRecordUpsert
       end
 
       module ClassMethods
-        def upsert(attributes, arel_condition: nil, &block)
+        def upsert!(attributes, arel_condition: nil, &block)
           if attributes.is_a?(Array)
             attributes.collect { |hash| upsert(hash, &block) }
           else
-            new(attributes, &block).upsert(
+            new(attributes, &block).upsert!(
               attributes: attributes.keys, arel_condition: arel_condition, validate: true
             )
           end
         end
+
+        def upsert(*args)
+          upsert!(*args)
+        rescue ::ActiveRecord::RecordInvalid
+          false
+        end
+
         def upsert_keys(*keys)
           return @_upsert_keys if keys.empty?
           keys = keys.first if keys.size == 1 # support single string/symbol, multiple string/symbols, and array

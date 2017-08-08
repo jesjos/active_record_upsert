@@ -63,12 +63,20 @@ module ActiveRecord
         it 'does not upsert if the object is invalid' do
           record = Vehicle.new(wheels_count: 4)
           expect { record.upsert }.to_not change{ Vehicle.count }
+          expect(record.upsert).to eq(false)
         end
 
         it 'saves the object if validate: false is passed' do
           record = Vehicle.new(wheels_count: 4)
           expect { record.upsert(validate: false) }.to change{ Vehicle.count }.by(1)
         end
+      end
+    end
+
+    describe '#upsert!' do
+      it 'raises ActiveRecord::RecordInvalid if the object is invalid' do
+        record = Vehicle.new(wheels_count: 4)
+        expect { record.upsert! }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
 
@@ -105,6 +113,12 @@ module ActiveRecord
           MyRecord.create(name: 'other', wisdom: 2)
           expect { MyRecord.upsert(id: record.id, wisdom: 2) }.to raise_error(ActiveRecord::RecordNotUnique)
         end
+      end
+    end
+
+    describe '.upsert!' do
+      it 'raises ActiveRecord::RecordInvalid if the object is invalid' do
+        expect { Vehicle.upsert!(wheels_count: 4) }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
   end
