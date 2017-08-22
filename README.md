@@ -59,7 +59,7 @@ r.upsert
 
 If you need to specify conditions for the update, pass them as Arel queries:
 
-```
+```ruby
 MyRecord.upsert({id: 1, wisdom: 3}, where: [MyRecord.arel_table[:updated_at].lt(1.day.ago)])
 ```
 
