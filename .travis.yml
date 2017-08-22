@@ -9,7 +9,7 @@ before_script:
   - createdb --echo -U postgres upsert_test
   - psql -U postgres upsert_test < spec/dummy/db/structure.sql
 
-before_install: gem install bundler -v 1.13.3
+before_install: gem install bundler
 
 addons:
   postgresql: "9.5"
