@@ -75,13 +75,13 @@ module ActiveRecord
         context 'with conditions' do
           it 'does not update the record if the condition does not match' do
             expect {
-              MyRecord.upsert(attributes, where: [MyRecord.arel_table[:wisdom].gt(3)])
+              MyRecord.upsert(attributes, arel_condition: MyRecord.arel_table[:wisdom].gt(3))
             }.to_not change { existing.reload.name }
           end
 
           it 'updates the record if the condition matches' do
             expect {
-              MyRecord.upsert(attributes, where: [MyRecord.arel_table[:wisdom].lt(3)])
+              MyRecord.upsert(attributes, arel_condition: MyRecord.arel_table[:wisdom].lt(3))
             }.to change { existing.reload.name }.to('othername')
           end
         end
