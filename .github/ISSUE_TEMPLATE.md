@@ -8,4 +8,4 @@ it will make it easier for us to track down the issue you're having.
 
 ActiveRecord version you're using: `[Replace this with the version]`
 
-Output from `ruby --version: `[Replace this with the version]`
+Output from `ruby --version`: `[Replace this with the version]`
