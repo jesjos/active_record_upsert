@@ -38,8 +38,8 @@ Or install it yourself as:
     $ gem install active_record_upsert
 
 ## Usage
-Just use `ActiveRecord.upsert` or `ActiveRecord#upsert`.
-*ActiveRecordUpsert* respects timestamps.
+
+Use `ActiveRecord.upsert` or `ActiveRecord#upsert`. *ActiveRecordUpsert* respects timestamps.
 
 ```ruby
 class MyRecord < ActiveRecord::Base
