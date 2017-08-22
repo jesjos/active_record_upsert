@@ -8,8 +8,10 @@ module ActiveRecordUpsert
         values = run_callbacks(:save) {
           run_callbacks(:create) {
             attribute_names ||= changed
-            attribute_names = attribute_names.map(&:to_s) + ['created_at', 'updated_at']
-            _upsert_record(attribute_names)
+            attribute_names = attribute_names.map(&:to_s) +
+              timestamp_attributes_for_create_in_model +
+              timestamp_attributes_for_update_in_model
+            _upsert_record(attribute_names.uniq)
           }
         }
         assign_attributes(values.first.to_h)
