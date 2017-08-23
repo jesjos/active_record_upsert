@@ -63,6 +63,18 @@ If you need to specify a condition for the update, pass it as an Arel query:
 MyRecord.upsert({id: 1, wisdom: 3}, arel_condition: MyRecord.arel_table[:updated_at].lt(1.day.ago))
 ```
 
+The instance `#upsert` can also take keyword arguments to specify a condition, or to limit which attributes to upsert
+(by default, all `changed` attributes will be passed to the upsert):
+
+```ruby
+r = MyRecord.new(id: 1)
+r.name = 'bar'
+r.color = 'blue'
+r.upsert(attributes: [:name], arel_condition: MyRecord.arel_table[:updated_at].lt(1.day.ago))
+# will only update :name, and only if the record is older than 1 day;
+# but if the record does not exist, will insert with both :name and :colors
+```
+
 Also, it's possible to specify which columns should be used for the conflict clause. **These must comprise a unique index in Postgres.**
 
 ```
