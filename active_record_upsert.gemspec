@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Jesper Josefsson", "Olle Jonsson"]
   spec.email         = ["jesper.josefsson@gmail.com", "olle.jonsson@gmail.com"]
   spec.homepage      = "https://github.com/jesjos/active_record_upsert/"
+  spec.license       = 'MIT'
 
   spec.summary       = %q{Real PostgreSQL 9.5+ upserts using ON CONFLICT for ActiveRecord}
 
