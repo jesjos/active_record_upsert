@@ -63,7 +63,7 @@ If you need to specify a condition for the update, pass it as an Arel query:
 MyRecord.upsert({id: 1, wisdom: 3}, arel_condition: MyRecord.arel_table[:updated_at].lt(1.day.ago))
 ```
 
-The instance `#upsert` can also take keyword arguments to specify a condition, or to limit which attributes to upsert
+The instance method `#upsert` can also take keyword arguments to specify a condition, or to limit which attributes to upsert
 (by default, all `changed` attributes will be passed to the upsert):
 
 ```ruby
