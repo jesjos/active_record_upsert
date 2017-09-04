@@ -1,7 +1,7 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module RelationExtensions
-      def upsert(values) # :nodoc:
+      def upsert(values, wheres) # :nodoc:
         primary_key_value = nil
 
         if primary_key && Hash === values
@@ -19,6 +19,7 @@ module ActiveRecordUpsert
 
         cm = arel_table.create_on_conflict_do_update
         cm.target = arel_table[column_name]
+        cm.wheres = wheres
         filter = ->(o) { [*column_arr, 'created_at'].include?(o.name) }
 
         cm.set(substitutes.reject { |s| filter.call(s.first) })
