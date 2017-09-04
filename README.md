@@ -116,3 +116,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Simon Dahlbacka
 - Paul Hoffer
 - Ivan ([@me](https://github.com/me))
+- Leon Miller-Out ([@sbleon](https://github.com/sbleon))
