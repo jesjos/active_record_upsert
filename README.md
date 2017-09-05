@@ -75,7 +75,23 @@ r.upsert(attributes: [:name], arel_condition: MyRecord.arel_table[:updated_at].l
 # but if the record does not exist, will insert with both :name and :colors
 ```
 
-Also, it's possible to specify which columns should be used for the conflict clause. **These must comprise a unique index in Postgres.**
+Upsert will perform validation on the object, and return false if it is not valid. To skip validation, pass `validate: false`:
+```ruby
+MyRecord.upsert({id: 1, wisdom: 3}, validate: false)
+```
+
+If you want validations to raise `ActiveRecord::RecordInvalid`, use `upsert!`:
+```ruby
+MyRecord.upsert!(id: 1, wisdom: 3)
+```
+
+Or using the instance method:
+```ruby
+r = MyRecord.new(id: 1, name: 'bar')
+r.upsert!
+```
+
+It's possible to specify which columns should be used for the conflict clause. **These must comprise a unique index in Postgres.**
 
 ```ruby
 class Vehicle < ActiveRecord::Base
