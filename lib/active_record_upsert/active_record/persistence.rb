@@ -25,9 +25,10 @@ module ActiveRecordUpsert
         false
       end
 
-      def _upsert_record(attribute_names = changed, arel_condition = nil)
-        attributes_values = arel_attributes_with_values_for_create(attribute_names)
-        values = self.class.unscoped.upsert(attributes_values, [arel_condition].compact)
+
+      def _upsert_record(upsert_attribute_names = changed, arel_condition = nil)
+        existing_attributes = arel_attributes_with_values_for_create(self.attributes.keys)
+        values = self.class.unscoped.upsert(existing_attributes, upsert_attribute_names, [arel_condition].compact)
         @new_record = false
         values
       end

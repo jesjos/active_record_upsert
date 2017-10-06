@@ -1,19 +1,11 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module RelationExtensions
-      def upsert(values, wheres) # :nodoc:
-        primary_key_value = nil
-
-        if primary_key && Hash === values
-          primary_key_value = values[values.keys.find { |k|
-            k.name == primary_key
-          }]
-        end
-
+      def upsert(existing_attributes, upsert_attributes, wheres) # :nodoc:
         im = arel_table.create_insert
         im.into arel_table
 
-        substitutes, binds = substitute_values values
+        substitutes, binds = substitute_values(existing_attributes)
         column_arr = self.klass.upsert_keys || [primary_key]
         column_name = column_arr.join(',')
 
@@ -21,19 +13,24 @@ module ActiveRecordUpsert
         cm.target = arel_table[column_name]
         cm.wheres = wheres
         filter = ->(o) { [*column_arr, 'created_at'].include?(o.name) }
+        filter2 = ->(o) { upsert_attributes.include?(o.name) }
 
-        cm.set(substitutes.reject { |s| filter.call(s.first) })
-        on_conflict_binds = binds.reject(&filter)
+        vals_for_upsert = substitutes.reject { |s| filter.call(s.first) }
+        vals_for_upsert = vals_for_upsert.select { |s| filter2.call(s.first) }
+
+        cm.set(vals_for_upsert)
+        on_conflict_binds = binds.reject(&filter).select(&filter2)
 
         im.on_conflict = cm.to_node
 
         im.insert substitutes
 
+
         @klass.connection.upsert(
           im,
           'SQL',
-          primary_key,       # not used
-          primary_key_value, # not used
+          nil, # primary key (not used)
+          nil, # primary key value (not used)
           nil,
           binds + on_conflict_binds)
       end
