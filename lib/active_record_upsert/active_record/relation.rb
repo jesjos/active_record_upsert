@@ -2,32 +2,27 @@ module ActiveRecordUpsert
   module ActiveRecord
     module RelationExtensions
       def upsert(existing_attributes, upsert_attributes, wheres) # :nodoc:
-        im = arel_table.create_insert
-        im.into arel_table
-
         substitutes, binds = substitute_values(existing_attributes)
-        column_arr = self.klass.upsert_keys || [primary_key]
-        column_name = column_arr.join(',')
+        upsert_keys = self.klass.upsert_keys || [primary_key]
 
-        cm = arel_table.create_on_conflict_do_update
-        cm.target = arel_table[column_name]
-        cm.wheres = wheres
-        filter = ->(o) { [*column_arr, 'created_at'].include?(o.name) }
-        filter2 = ->(o) { upsert_attributes.include?(o.name) }
+        upsert_attributes = upsert_attributes - [*upsert_keys, 'created_at']
+        upsert_keys_filter = ->(o) { upsert_attributes.include?(o.name) }
 
-        vals_for_upsert = substitutes.reject { |s| filter.call(s.first) }
-        vals_for_upsert = vals_for_upsert.select { |s| filter2.call(s.first) }
+        on_conflict_binds = binds.select(&upsert_keys_filter)
+        vals_for_upsert = substitutes.select { |s| upsert_keys_filter.call(s.first) }
 
-        cm.set(vals_for_upsert)
-        on_conflict_binds = binds.reject(&filter).select(&filter2)
+        on_conflict_do_update = arel_table.create_on_conflict_do_update
+        on_conflict_do_update.target = arel_table[upsert_keys.join(',')]
+        on_conflict_do_update.wheres = wheres
+        on_conflict_do_update.set(vals_for_upsert)
 
-        im.on_conflict = cm.to_node
-
-        im.insert substitutes
-
+        insert_manager = arel_table.create_insert
+        insert_manager.into arel_table
+        insert_manager.on_conflict = on_conflict_do_update.to_node
+        insert_manager.insert substitutes
 
         @klass.connection.upsert(
-          im,
+          insert_manager,
           'SQL',
           nil, # primary key (not used)
           nil, # primary key value (not used)
