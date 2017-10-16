@@ -163,3 +163,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Paul Hoffer
 - Ivan ([@me](https://github.com/me))
 - Leon Miller-Out ([@sbleon](https://github.com/sbleon))
+- Andrii Dmytrenko ([@Antti](https://github.com/Antti))
+- Alexia McDonald ([@alexiamcdonald](https://github.com/alexiamcdonald))
