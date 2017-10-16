@@ -1,39 +1,31 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module RelationExtensions
-      def upsert(values, wheres) # :nodoc:
-        primary_key_value = nil
+      def upsert(existing_attributes, upsert_attributes, wheres) # :nodoc:
+        substitutes, binds = substitute_values(existing_attributes)
+        upsert_keys = self.klass.upsert_keys || [primary_key]
 
-        if primary_key && Hash === values
-          primary_key_value = values[values.keys.find { |k|
-            k.name == primary_key
-          }]
-        end
+        upsert_attributes = upsert_attributes - [*upsert_keys, 'created_at']
+        upsert_keys_filter = ->(o) { upsert_attributes.include?(o.name) }
 
-        im = arel_table.create_insert
-        im.into arel_table
+        on_conflict_binds = binds.select(&upsert_keys_filter)
+        vals_for_upsert = substitutes.select { |s| upsert_keys_filter.call(s.first) }
 
-        substitutes, binds = substitute_values values
-        column_arr = self.klass.upsert_keys || [primary_key]
-        column_name = column_arr.join(',')
+        on_conflict_do_update = arel_table.create_on_conflict_do_update
+        on_conflict_do_update.target = arel_table[upsert_keys.join(',')]
+        on_conflict_do_update.wheres = wheres
+        on_conflict_do_update.set(vals_for_upsert)
 
-        cm = arel_table.create_on_conflict_do_update
-        cm.target = arel_table[column_name]
-        cm.wheres = wheres
-        filter = ->(o) { [*column_arr, 'created_at'].include?(o.name) }
-
-        cm.set(substitutes.reject { |s| filter.call(s.first) })
-        on_conflict_binds = binds.reject(&filter)
-
-        im.on_conflict = cm.to_node
-
-        im.insert substitutes
+        insert_manager = arel_table.create_insert
+        insert_manager.into arel_table
+        insert_manager.on_conflict = on_conflict_do_update.to_node
+        insert_manager.insert substitutes
 
         @klass.connection.upsert(
-          im,
+          insert_manager,
           'SQL',
-          primary_key,       # not used
-          primary_key_value, # not used
+          nil, # primary key (not used)
+          nil, # primary key value (not used)
           nil,
           binds + on_conflict_binds)
       end
