@@ -1,6 +1,8 @@
 sudo: required
 dist: trusty
 language: ruby
+cache:
+  bundler: true
 env:
   - DATABASE_URL="postgresql://postgres@localhost/upsert_test"
 rvm:
