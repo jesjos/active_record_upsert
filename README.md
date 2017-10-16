@@ -75,6 +75,27 @@ r.upsert(attributes: [:name], arel_condition: MyRecord.arel_table[:updated_at].l
 # but if the record does not exist, will insert with both :name and :colors
 ```
 
+If you want to create a record with the specific attributes, but update only a limited set of attributes,
+similar to how `ActiveRecord::Base.create_with` works, you can do the following:
+
+```ruby
+existing_record = MyRecord.create(id: 1, name: 'lemon', color: 'green')
+r = MyRecord.new(id: 1, name: 'banana', color: 'yellow')
+r.upsert(attributes: [:color])
+# => #<MyRecord id: 1, name: "lemon", color: "yellow", ...>
+
+r = MyRecord.new(id: 2, name: 'banana', color: 'yellow')
+r.upsert(attributes: [:color])
+
+# => #<MyRecord id: 2, name: "banana", color: "yellow", ...>
+
+# This is similar to:
+
+MyRecord.create_with(name: 'banana').find_or_initialize_by(id: 2).update(color: 'yellow')
+
+```
+
+
 Upsert will perform validation on the object, and return false if it is not valid. To skip validation, pass `validate: false`:
 ```ruby
 MyRecord.upsert({id: 1, wisdom: 3}, validate: false)

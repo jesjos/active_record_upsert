@@ -18,7 +18,7 @@ module ActiveRecord
           expect(record.updated_at).not_to be_nil
         end
 
-        it 'updates only given attributes' do
+        it 'creates record with all the attributes it is initialized with' do
           record = MyRecord.new(id: 25, name: 'Some name', wisdom: 3)
           record.upsert(attributes: [:id, :name])
           expect(record.reload.wisdom).to eq(3)
