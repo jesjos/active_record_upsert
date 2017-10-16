@@ -22,11 +22,12 @@ module ActiveRecord
       context 'when the record already exists' do
         let(:key) { 1 }
         before { MyRecord.create(id: key, name: 'somename') }
+
         it 'sets the updated_at timestamp' do
           first_updated_at = MyRecord.find(key).updated_at
           upserted = MyRecord.new(id: key)
           upserted.upsert
-          expect(upserted.updated_at).to be > first_updated_at
+          expect(upserted.reload.updated_at).to be > first_updated_at
         end
 
         it 'does not reset the created_at timestamp' do
@@ -84,12 +85,18 @@ module ActiveRecord
       context 'when the record already exists' do
         let(:key) { 1 }
         let(:attributes) { {id: key, name: 'othername', wisdom: nil} }
-        let!(:existing) { MyRecord.create(id: key, name: 'somename', wisdom: 2) }
+        let(:existing_updated_at) { Time.new(2017, 1, 1) }
+        let!(:existing) { MyRecord.create(id: key, name: 'somename', wisdom: 2, updated_at: existing_updated_at) }
 
         it 'updates all passed attributes' do
           record = MyRecord.upsert(attributes)
           expect(record.name).to eq(attributes[:name])
           expect(record.wisdom).to eq(attributes[:wisdom])
+        end
+
+        it 'sets the updated_at timestamp' do
+          record = MyRecord.upsert(attributes)
+          expect(record.reload.updated_at).to be > existing_updated_at
         end
 
         context 'with conditions' do
@@ -102,7 +109,8 @@ module ActiveRecord
           it 'updates the record if the condition matches' do
             expect {
               MyRecord.upsert(attributes, arel_condition: MyRecord.arel_table[:wisdom].lt(3))
-            }.to change { existing.reload.name }.to('othername')
+            }.to change { existing.reload.wisdom }.to(nil)
+            expect(existing.reload.updated_at).to be > existing_updated_at
           end
         end
       end
