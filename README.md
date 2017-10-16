@@ -39,6 +39,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Create
+
 Use `ActiveRecord.upsert` or `ActiveRecord#upsert`. *ActiveRecordUpsert* respects timestamps.
 
 ```ruby
@@ -57,6 +59,8 @@ r.upsert
 # => #<MyRecord id: 1, name: "bar", created_at: "2016-02-20 14:15:55", updated_at: "2016-02-20 14:18:49", wisdom: 3>
 ```
 
+### Update
+
 If you need to specify a condition for the update, pass it as an Arel query:
 
 ```ruby
@@ -74,6 +78,8 @@ r.upsert(attributes: [:name], arel_condition: MyRecord.arel_table[:updated_at].l
 # will only update :name, and only if the record is older than 1 day;
 # but if the record does not exist, will insert with both :name and :colors
 ```
+
+### Create with specific Attributes
 
 If you want to create a record with the specific attributes, but update only a limited set of attributes,
 similar to how `ActiveRecord::Base.create_with` works, you can do the following:
@@ -95,6 +101,7 @@ MyRecord.create_with(name: 'banana').find_or_initialize_by(id: 2).update(color: 
 
 ```
 
+### Validations
 
 Upsert will perform validation on the object, and return false if it is not valid. To skip validation, pass `validate: false`:
 ```ruby
@@ -111,6 +118,8 @@ Or using the instance method:
 r = MyRecord.new(id: 1, name: 'bar')
 r.upsert!
 ```
+
+### Conflict Clauses
 
 It's possible to specify which columns should be used for the conflict clause. **These must comprise a unique index in Postgres.**
 
