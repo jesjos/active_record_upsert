@@ -15,7 +15,7 @@ module ActiveRecordUpsert
             _upsert_record(attributes.map(&:to_s).uniq, arel_condition)
           }
         }
-        assign_attributes(values.first.to_h)
+        assign_attributes(values.first.to_h.slice(*self.attributes.keys))
         self
       end
 
