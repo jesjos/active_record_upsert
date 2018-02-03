@@ -1,5 +1,6 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -87,6 +88,7 @@ CREATE TABLE vehicles (
     id integer NOT NULL,
     wheels_count integer,
     name character varying,
+    make character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -112,21 +114,21 @@ ALTER SEQUENCE vehicles_id_seq OWNED BY vehicles.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: my_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY my_records ALTER COLUMN id SET DEFAULT nextval('my_records_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: vehicles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicles ALTER COLUMN id SET DEFAULT nextval('vehicles_id_seq'::regclass);
 
 
 --
--- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ar_internal_metadata
@@ -134,7 +136,7 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: my_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: my_records my_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY my_records
@@ -142,7 +144,7 @@ ALTER TABLE ONLY my_records
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -150,7 +152,7 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: vehicles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: vehicles vehicles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY vehicles
@@ -162,6 +164,13 @@ ALTER TABLE ONLY vehicles
 --
 
 CREATE UNIQUE INDEX index_my_records_on_wisdom ON my_records USING btree (wisdom);
+
+
+--
+-- Name: index_vehicles_on_make_and_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicles_on_make_and_name ON vehicles USING btree (make, name);
 
 
 --
