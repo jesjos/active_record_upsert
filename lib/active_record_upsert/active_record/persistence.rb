@@ -59,7 +59,13 @@ module ActiveRecordUpsert
         def upsert_keys(*keys)
           return @_upsert_keys if keys.empty?
           keys = keys.first if keys.size == 1 # support single string/symbol, multiple string/symbols, and array
+          return if keys.nil?
           @_upsert_keys = Array(keys).map(&:to_s)
+        end
+
+        def inherited(subclass)
+          super
+          subclass.upsert_keys(upsert_keys)
         end
       end
     end
