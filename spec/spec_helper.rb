@@ -10,6 +10,7 @@ ENV['DATABASE_URL'] ||= 'postgresql://localhost/upsert_test'
 require File.expand_path('../../spec/dummy/config/environment.rb', __FILE__)
 
 RSpec.configure do |config|
+  config.disable_monkey_patching!
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)

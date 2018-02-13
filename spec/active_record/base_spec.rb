@@ -1,5 +1,5 @@
 module ActiveRecord
-  describe 'Base' do
+  RSpec.describe 'Base' do
     describe '#upsert' do
       let(:record) { MyRecord.new(id: 'some_id') }
       it 'calls save/create/commit callbacks' do
