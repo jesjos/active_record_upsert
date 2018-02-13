@@ -13,6 +13,8 @@ task :setup_and_run_spec do |rake_task|
 
   require File.expand_path('../spec/dummy/config/environment.rb', __FILE__)
 
+  ActiveRecord::Base.connection.migrations_paths << 'spec/dummy/db/migrate'
+
   include ActiveRecord::Tasks
   DatabaseTasks.db_dir = 'spec/dummy/db'
   DatabaseTasks.drop_current
