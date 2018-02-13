@@ -1,5 +1,5 @@
 module ActiveRecord
-  describe 'Alernate conflict keys' do
+  RSpec.describe 'Alernate conflict keys' do
     describe '#upsert' do
       let(:record) { Vehicle.new(make: 'Ford', name: 'Focus') }
       it 'calls save/create/commit callbacks' do

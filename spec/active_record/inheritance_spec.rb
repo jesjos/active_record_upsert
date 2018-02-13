@@ -1,5 +1,5 @@
 module ActiveRecord
-  describe 'Base' do
+  RSpec.describe 'Base' do
     describe '.upsert_keys' do
       context 'when using inheritance' do
         context 'and not setting subclass upsert keys' do
