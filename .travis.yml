@@ -16,3 +16,11 @@ before_install: gem install bundler
 addons:
   postgresql: "9.5"
 
+env:
+  - "RAILS_VERSION=5.2"
+  - "RAILS_VERSION=5.1"
+  - "RAILS_VERSION=5.0"
+  - "RAILS_VERSION=master"
+
+allow_failures:
+  - env: 'RAILS_VERSION=master'

@@ -3,18 +3,13 @@ module ActiveRecordUpsert
     module ConnectionAdapters
       module Postgresql
         module DatabaseStatementsExtensions
-          def upsert(arel, name = nil, pk = nil, id_value = nil, sequence_name = nil, binds = [])
-            sql, binds, pk, _sequence_name = sql_for_upsert(to_sql(arel, binds), pk, id_value, sequence_name, binds)
-            exec_upsert(sql, name, binds, pk)
+          def upsert(arel, name = nil, binds = [])
+            sql, binds = to_sql_and_binds(arel, binds)
+            exec_upsert(sql, name, binds)
           end
 
-          def sql_for_upsert(sql, pk, id_value, sequence_name, binds)
-            sql = "#{sql} RETURNING *"
-            [sql, binds, pk, sequence_name]
-          end
-
-          def exec_upsert(sql, name, binds, pk)
-            exec_query(sql, name, binds)
+          def exec_upsert(sql, name, binds)
+            exec_query("#{sql} RETURNING *", name, binds)
           end
         end
       end

@@ -1,7 +1,6 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module PersistenceExtensions
-
       def upsert!(attributes: nil, arel_condition: nil, validate: true)
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
@@ -31,10 +30,9 @@ module ActiveRecordUpsert
         false
       end
 
-
       def _upsert_record(upsert_attribute_names = changed, arel_condition = nil)
         existing_attributes = arel_attributes_with_values_for_create(self.attributes.keys)
-        values = self.class.unscoped.upsert(existing_attributes, upsert_attribute_names, [arel_condition].compact)
+        values = self.class._upsert_record(existing_attributes, upsert_attribute_names, [arel_condition].compact)
         @new_record = false
         values
       end
@@ -54,6 +52,21 @@ module ActiveRecordUpsert
           upsert!(*args)
         rescue ::ActiveRecord::RecordInvalid
           false
+        end
+
+        def _upsert_record(existing_attributes, upsert_attributes_names, wheres) # :nodoc:
+          upsert_keys = self.upsert_keys || [primary_key]
+          upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
+          values_for_upsert = existing_attributes.select { |a| upsert_attributes_names.include?(a.name) }
+
+          insert_manager = arel_table.compile_upsert(
+            upsert_keys,
+            _substitute_values(values_for_upsert),
+            _substitute_values(existing_attributes),
+            wheres
+          )
+
+          connection.upsert(insert_manager, "#{self} Upsert")
         end
 
         def upsert_keys(*keys)
