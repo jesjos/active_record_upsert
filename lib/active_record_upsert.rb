@@ -11,7 +11,7 @@ end
 require 'active_record_upsert/arel'
 require 'active_record_upsert/active_record'
 
-require 'active_record_upsert/compatibility/rails51.rb' if Rails.version >= '5.1.0' && Rails.version < '5.2.0'
+require 'active_record_upsert/compatibility/rails51.rb' if Rails.version >= '5.1.0' && Rails.version < '5.2.0.rc1'
 require 'active_record_upsert/compatibility/rails50.rb' if Rails.version >= '5.0.0' && Rails.version < '5.1.0'
 
 module ActiveRecordUpsert
