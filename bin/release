@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -e
-OUR_RUBY=2.3.6
-
-rvm $OUR_RUBY do bundle check
-rvm $OUR_RUBY do bundle exec rake release 
-
