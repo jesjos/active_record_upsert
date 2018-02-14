@@ -1,7 +1,6 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module PersistenceExtensions
-
       def upsert!(attributes: nil, arel_condition: nil, validate: true)
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
