@@ -4,23 +4,26 @@ language: ruby
 cache:
   bundler: true
 env:
-  - DATABASE_URL="postgresql://postgres@localhost/upsert_test"
+- RAILS_VERSION=5.2
+- RAILS_VERSION=5.1
+- RAILS_VERSION=5.0
+- RAILS_VERSION=master
 rvm:
-  - 2.3.1
+- 2.3.1
 before_script:
-  - createdb --echo -U postgres upsert_test
-  - psql -U postgres upsert_test < spec/dummy/db/structure.sql
-
+- createdb --echo -U postgres upsert_test
+- psql -U postgres upsert_test < spec/dummy/db/structure.sql
 before_install: gem install bundler
-
 addons:
-  postgresql: "9.5"
-
-env:
-  - "RAILS_VERSION=5.2"
-  - "RAILS_VERSION=5.1"
-  - "RAILS_VERSION=5.0"
-  - "RAILS_VERSION=master"
-
-allow_failures:
-  - env: 'RAILS_VERSION=master'
+  postgresql: '9.5'
+matrix:
+  allow_failures:
+    - env: RAILS_VERSION=master
+deploy:
+  provider: rubygems
+  api_key:
+    secure: WtJtvlwI0T+HlhsJp8tlOhjDCtBvL2ezkTvTIguW6UXX8/AJbsBiwJXRlRWZvlmxLTMq9/Jwq9nOj1vB7Klv8oJPJdoXK5NuoZkpJBIvzEjwJq0mN0pbVMzl+H6FTfRH9OMHAYbxLlLaMSIub++LxOnjZf+XNNiMI4NpoIhF+MuGOcq7Pm200E/xGdvwOvyJ671HllKNwP6JKrVPTm6J+cWWKS70CvlvRgkkfJu2a5LNyiqS7t8b3N1IlXY5lwONqQ9BYw+6tkCRh21vY2Xa24iQo/RwkSIVj/ldyVQq0vjz8K5Q1oyY3RapoeZQzx4iDVUJsCWLGwHxlXWqjc/4h1JNuioRfA5lc1XsKA0kP4maDXpLJvi6Ca2g/i4sjz3jDpR96PgATK0zSeH+LsZzrwRHBXuiUu/Dx0KsurT+GtLSV/GueIeJcWsfoLyAt5UaT0luAmbi2hrnl+L6z+bAGEsoNrVX4BuiS2OYrQ3FLAVgFnGO9pIIGtfAQJBVPTayv5Ulhha5llio0vWxcMnwjLlUmG2MKXEOZXLxEgR9nGFXuLEM9FqFGsgp+NTsFiD1VDLXo9jdbtyLNHcAY7hpZvWpTGdX/ZfyYtjDfGN6J9+hvWOTqRr+PUsjNaYafSq0+dsV/OaYCgr/qU4LB/qGZ0o8KF4VLws+RUcJ+Q+8Bts=
+  gem: active_record_upsert
+  on:
+    tags: true
+    repo: jesjos/active_record_upsert
