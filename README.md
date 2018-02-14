@@ -166,3 +166,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Andrii Dmytrenko ([@Antti](https://github.com/Antti))
 - Alexia McDonald ([@alexiamcdonald](https://github.com/alexiamcdonald))
 - Timo Schilling ([@timoschilling](https://github.com/timoschilling))
+- Benedikt Deicke ([@benedikt](https://github.com/benedikt))
