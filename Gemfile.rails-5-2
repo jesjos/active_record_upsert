@@ -1,0 +1,5 @@
+group :development, :test do
+  gem 'rails', '>= 5.2.0.rc1', '< 6.0'
+end
+
+eval_gemfile "./Gemfile.base"
