@@ -1,5 +1,5 @@
 group :development, :test do
-  gem 'rails' github: 'rails/rails'
+  gem 'rails', github: 'rails/rails'
 end
 
 eval_gemfile "./Gemfile.base"
