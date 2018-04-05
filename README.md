@@ -140,6 +140,14 @@ r.upsert
 # => #<Vehicle id: 1, make: 'Ford', name: 'Focus', doors: 2>
 ```
 
+Partial indexes can be supported with the addition of a `where` clause.
+
+```ruby
+class Account < ApplicationRecord
+  upsert_keys :name, where: 'active is TRUE'
+end
+```
+
 ## Tests
 
 Make sure to have an upsert_test database:
