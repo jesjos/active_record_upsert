@@ -1,1 +1,1 @@
-eval_gemfile "./Gemfile.rails-5-2"
+eval_gemfile "#{__dir__}/Gemfile.rails-5-2"

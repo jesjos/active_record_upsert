@@ -2,4 +2,4 @@ group :development, :test do
   gem 'rails', '>= 5.1', '< 5.2'
 end
 
-eval_gemfile "./Gemfile.base"
+eval_gemfile "#{__dir__}/Gemfile.base"
