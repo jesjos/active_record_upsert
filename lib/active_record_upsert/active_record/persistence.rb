@@ -38,12 +38,12 @@ module ActiveRecordUpsert
       end
 
       module ClassMethods
-        def upsert!(attributes, arel_condition: nil, &block)
+        def upsert!(attributes, arel_condition: nil, validate: true, &block)
           if attributes.is_a?(Array)
             attributes.collect { |hash| upsert(hash, &block) }
           else
             new(attributes, &block).upsert!(
-              attributes: attributes.keys, arel_condition: arel_condition, validate: true
+              attributes: attributes.keys, arel_condition: arel_condition, validate: validate
             )
           end
         end
