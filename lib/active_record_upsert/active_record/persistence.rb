@@ -61,6 +61,7 @@ module ActiveRecordUpsert
 
           insert_manager = arel_table.compile_upsert(
             upsert_keys,
+            upsert_options,
             _substitute_values(values_for_upsert),
             _substitute_values(existing_attributes),
             wheres
@@ -71,14 +72,20 @@ module ActiveRecordUpsert
 
         def upsert_keys(*keys)
           return @_upsert_keys if keys.empty?
+          options = keys.extract_options!
           keys = keys.first if keys.size == 1 # support single string/symbol, multiple string/symbols, and array
           return if keys.nil?
           @_upsert_keys = Array(keys).map(&:to_s)
+          @_upsert_options = options
+        end
+
+        def upsert_options
+          @_upsert_options || {}
         end
 
         def inherited(subclass)
           super
-          subclass.upsert_keys(upsert_keys)
+          subclass.upsert_keys(upsert_keys, upsert_options)
         end
       end
     end

@@ -11,10 +11,11 @@
 # end
 module Arel
   module Crud
-    def compile_upsert(upsert_keys, upsert_values, insert_values, wheres)
+    def compile_upsert(upsert_keys, upsert_options, upsert_values, insert_values, wheres)
       on_conflict_do_update = OnConflictDoUpdateManager.new
 
       on_conflict_do_update.target = self[upsert_keys.join(',')]
+      on_conflict_do_update.target_condition = upsert_options[:where]
       on_conflict_do_update.wheres = wheres
       on_conflict_do_update.set(upsert_values)
 

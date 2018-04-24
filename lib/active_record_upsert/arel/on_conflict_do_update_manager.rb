@@ -8,6 +8,10 @@ module Arel
       @ctx = @ast
     end
 
+    def target_condition= where
+      @ast.where = where
+    end
+
     def target= column
       @ast.target = column
     end

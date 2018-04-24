@@ -78,6 +78,22 @@ module ActiveRecord
           expect { record.upsert(validate: false) }.to change{ Vehicle.count }.by(1)
         end
       end
+
+      context "when supporting a partial index" do
+        before { Account.create(name: 'somename', active: true) }
+
+        context 'when the record matches the partial index' do
+          it 'raises an error' do
+            expect{ Account.upsert!(name: 'somename', active: true) }.not_to change{ Account.count }.from(1)
+          end
+        end
+
+        context 'when the record does meet the where clause' do
+          it 'raises an error' do
+            expect{ Account.upsert!(name: 'somename', active: false) }.to change{ Account.count }.from(1).to(2)
+          end
+        end
+      end
     end
 
     describe '#upsert!' do

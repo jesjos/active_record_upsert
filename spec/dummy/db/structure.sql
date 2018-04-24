@@ -28,6 +28,38 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: accounts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE accounts (
+    id integer NOT NULL,
+    name character varying,
+    active boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE accounts_id_seq OWNED BY accounts.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -114,6 +146,13 @@ ALTER SEQUENCE vehicles_id_seq OWNED BY vehicles.id;
 
 
 --
+-- Name: accounts id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY accounts ALTER COLUMN id SET DEFAULT nextval('accounts_id_seq'::regclass);
+
+
+--
 -- Name: my_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -125,6 +164,14 @@ ALTER TABLE ONLY my_records ALTER COLUMN id SET DEFAULT nextval('my_records_id_s
 --
 
 ALTER TABLE ONLY vehicles ALTER COLUMN id SET DEFAULT nextval('vehicles_id_seq'::regclass);
+
+
+--
+-- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY accounts
+    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -160,6 +207,13 @@ ALTER TABLE ONLY vehicles
 
 
 --
+-- Name: index_accounts_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_accounts_on_name ON accounts USING btree (name) WHERE (active IS TRUE);
+
+
+--
 -- Name: index_my_records_on_wisdom; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -181,6 +235,5 @@ SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20160419103547'),
-('20160419124138');
-
-
+('20160419124138'),
+('20160419124140');
