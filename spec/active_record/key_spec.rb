@@ -43,8 +43,9 @@ module ActiveRecord
         end
       end
       context 'different ways of setting keys' do
-        let(:attrs) { {make: 'Ford', name: 'Focus'} }
+        let(:attrs) { {make: 'Ford', name: 'Focus', long_field: SecureRandom.uuid} }
         before { Vehicle.create(attrs) }
+
         it 'works with multiple symbol args' do
           Vehicle.upsert_keys :make, :name
           upserted = Vehicle.new(**attrs, wheels_count: 1)
@@ -83,6 +84,14 @@ module ActiveRecord
           upserted = Vehicle.new(id: v.id, wheels_count: 1)
           upserted.upsert
           expect(upserted.wheels_count).to eq(1)
+          expect(upserted.id).to eq(v.id)
+        end
+        it 'works with a litteral' do
+          v = Vehicle.create
+          Vehicle.upsert_keys literal: 'md5(long_field)'
+          upserted = Vehicle.new(id: v.id, long_field: attrs[:long_field])
+          upserted.upsert
+          expect(upserted.long_field).to eq(attrs[:long_field])
           expect(upserted.id).to eq(v.id)
         end
       end

@@ -152,7 +152,7 @@ Custom index can be handled with a `Arel::Nodes::SqlLiteral` instance:
 
 ```ruby
 class Account < ApplicationRecord
-  upsert_keys Arel::Nodes::SqlLiteral.new('md5(my_long_field)')
+  upsert_keys literal: 'md5(my_long_field)'
 end
 ```
 
