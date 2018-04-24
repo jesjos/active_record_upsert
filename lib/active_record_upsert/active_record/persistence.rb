@@ -61,6 +61,7 @@ module ActiveRecordUpsert
 
           insert_manager = arel_table.compile_upsert(
             upsert_keys,
+            upsert_options,
             _substitute_values(values_for_upsert),
             _substitute_values(existing_attributes),
             wheres
@@ -84,7 +85,7 @@ module ActiveRecordUpsert
 
         def inherited(subclass)
           super
-          subclass.upsert_keys(upsert_keys)
+          subclass.upsert_keys(upsert_keys, upsert_options)
         end
       end
     end

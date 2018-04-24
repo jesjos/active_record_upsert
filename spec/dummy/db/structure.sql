@@ -146,7 +146,6 @@ ALTER SEQUENCE vehicles_id_seq OWNED BY vehicles.id;
 
 
 --
-=======
 -- Name: accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -168,7 +167,6 @@ ALTER TABLE ONLY vehicles ALTER COLUMN id SET DEFAULT nextval('vehicles_id_seq':
 
 
 --
-=======
 -- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
