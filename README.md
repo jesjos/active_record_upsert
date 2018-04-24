@@ -175,3 +175,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Alexia McDonald ([@alexiamcdonald](https://github.com/alexiamcdonald))
 - Timo Schilling ([@timoschilling](https://github.com/timoschilling))
 - Benedikt Deicke ([@benedikt](https://github.com/benedikt))
+- Daniel Cooper ([@danielcooper](https://github.com/danielcooper))
