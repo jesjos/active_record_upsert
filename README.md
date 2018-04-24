@@ -176,3 +176,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Timo Schilling ([@timoschilling](https://github.com/timoschilling))
 - Benedikt Deicke ([@benedikt](https://github.com/benedikt))
 - Daniel Cooper ([@danielcooper](https://github.com/danielcooper))
+- Laurent Vallar ([@val](https://github.com/val))
+- Emmanuel Quentin ([@manuquentin](https://github.com/manuquentin))
