@@ -126,8 +126,6 @@ It's possible to specify which columns should be used for the conflict clause. *
 ```ruby
 class Vehicle < ActiveRecord::Base
   upsert_keys [:make, :name]
-  # OR
-  # upsert_keys Arel::Nodes::SqlLiteral.new('md5(my_long_field)')
 end
 
 Vehicle.upsert(make: 'Ford', name: 'F-150', doors: 4)
@@ -147,6 +145,14 @@ Partial indexes can be supported with the addition of a `where` clause.
 ```ruby
 class Account < ApplicationRecord
   upsert_keys :name, where: 'active is TRUE'
+end
+```
+
+Custom index can be handled with a `Arel::Nodes::SqlLiteral` instance:
+
+```ruby
+class Account < ApplicationRecord
+  upsert_keys Arel::Nodes::SqlLiteral.new('md5(my_long_field)')
 end
 ```
 
