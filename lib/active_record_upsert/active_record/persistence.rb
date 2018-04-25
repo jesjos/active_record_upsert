@@ -75,7 +75,7 @@ module ActiveRecordUpsert
           options = keys.extract_options!
           keys = keys.first if keys.size == 1 # support single string/symbol, multiple string/symbols, and array
           return if keys.nil?
-          @_upsert_keys = Array(keys).map(&:to_s)
+          @_upsert_keys = Array(keys)
           @_upsert_options = options
         end
 

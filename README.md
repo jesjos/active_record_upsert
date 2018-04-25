@@ -148,6 +148,14 @@ class Account < ApplicationRecord
 end
 ```
 
+Custom index can be handled with a Hash containing a literal key :
+
+```ruby
+class Account < ApplicationRecord
+  upsert_keys literal: 'md5(my_long_field)'
+end
+```
+
 ## Tests
 
 Make sure to have an upsert_test database:

@@ -45,6 +45,7 @@ CREATE TABLE accounts (
 --
 
 CREATE SEQUENCE accounts_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -89,6 +90,7 @@ CREATE TABLE my_records (
 --
 
 CREATE SEQUENCE my_records_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -121,6 +123,7 @@ CREATE TABLE vehicles (
     wheels_count integer,
     name character varying,
     make character varying,
+    long_field character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -131,6 +134,7 @@ CREATE TABLE vehicles (
 --
 
 CREATE SEQUENCE vehicles_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -228,6 +232,13 @@ CREATE UNIQUE INDEX index_vehicles_on_make_and_name ON vehicles USING btree (mak
 
 
 --
+-- Name: index_vehicles_on_md5_long_field; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicles_on_md5_long_field ON vehicles USING btree (md5((long_field)::text));
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -237,3 +248,5 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20160419103547'),
 ('20160419124138'),
 ('20160419124140');
+
+
