@@ -44,7 +44,7 @@ module ActiveRecord
       end
       context 'different ways of setting keys' do
         let(:attrs) { {make: 'Ford', name: 'Focus', long_field: SecureRandom.uuid} }
-        before { Vehicle.create(attrs) }
+        let!(:vehicule) { Vehicle.create(attrs) }
 
         it 'works with multiple symbol args' do
           Vehicle.upsert_keys :make, :name
@@ -71,28 +71,31 @@ module ActiveRecord
           expect(upserted.wheels_count).to eq(1)
         end
         it 'works with a single symbol' do
-          v = Vehicle.create
           Vehicle.upsert_keys :id
-          upserted = Vehicle.new(id: v.id, wheels_count: 1)
-          upserted.upsert
+          upserted = Vehicle.new(id: vehicule.id, name: 'ford', wheels_count: 1)
+          result = upserted.upsert
+
+          expect(result).to be_truthy
           expect(upserted.wheels_count).to eq(1)
-          expect(upserted.id).to eq(v.id)
+          expect(upserted.id).to eq(vehicule.id)
         end
         it 'works with a single string' do
-          v = Vehicle.create
           Vehicle.upsert_keys 'id'
-          upserted = Vehicle.new(id: v.id, wheels_count: 1)
-          upserted.upsert
+          upserted = Vehicle.new(id: vehicule.id, name: 'ford', wheels_count: 1)
+          result = upserted.upsert
+
+          expect(result).to be_truthy
           expect(upserted.wheels_count).to eq(1)
-          expect(upserted.id).to eq(v.id)
+          expect(upserted.id).to eq(vehicule.id)
         end
         it 'works with a literal' do
-          v = Vehicle.create
           Vehicle.upsert_keys literal: 'md5(long_field)'
-          upserted = Vehicle.new(id: v.id, long_field: attrs[:long_field])
-          upserted.upsert
+          upserted = Vehicle.new(id: vehicule.id, name: 'ford', long_field: attrs[:long_field])
+          result = upserted.upsert
+
+          expect(result).to be_truthy
           expect(upserted.long_field).to eq(attrs[:long_field])
-          expect(upserted.id).to eq(v.id)
+          expect(upserted.id).to eq(vehicule.id)
         end
       end
 
