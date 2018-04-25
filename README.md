@@ -148,7 +148,7 @@ class Account < ApplicationRecord
 end
 ```
 
-Custom index can be handled with a `Arel::Nodes::SqlLiteral` instance:
+Custom index can be handled with a Hash containing a literal key :
 
 ```ruby
 class Account < ApplicationRecord
