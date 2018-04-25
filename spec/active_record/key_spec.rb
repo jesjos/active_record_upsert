@@ -86,7 +86,7 @@ module ActiveRecord
           expect(upserted.wheels_count).to eq(1)
           expect(upserted.id).to eq(v.id)
         end
-        it 'works with a litteral' do
+        it 'works with a literal' do
           v = Vehicle.create
           Vehicle.upsert_keys literal: 'md5(long_field)'
           upserted = Vehicle.new(id: v.id, long_field: attrs[:long_field])

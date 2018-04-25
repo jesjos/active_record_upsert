@@ -13,7 +13,7 @@ module Arel
   module Crud
     def compile_upsert(upsert_keys, upsert_options, upsert_values, insert_values, wheres)
       # Support non-attribute key (like `md5(my_attribute)``)
-      target = self[upsert_keys.class == Hash ? ::Arel::Nodes::SqlLiteral.new(upsert_keys[:literal]) : upsert_keys.join(',')]
+      target = self[upsert_keys.kind_of?(Hash) ? ::Arel::Nodes::SqlLiteral.new(upsert_keys[:literal]) : upsert_keys.join(',')]
       on_conflict_do_update = OnConflictDoUpdateManager.new
 
       on_conflict_do_update.target = target
