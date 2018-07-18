@@ -144,6 +144,14 @@ module ActiveRecord
           expect { MyRecord.upsert(id: record.id, wisdom: 2) }.to raise_error(ActiveRecord::RecordNotUnique)
         end
       end
+
+      context 'when updating attributes from the database' do
+        it 'does not call setter methods' do
+          record = MyRecord.new(name: 'somename', wisdom: 1)
+          expect(record).to_not receive(:name=).with('somename')
+          record.upsert
+        end
+      end
     end
 
     describe '.upsert!' do

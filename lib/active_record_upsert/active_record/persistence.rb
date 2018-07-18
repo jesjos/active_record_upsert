@@ -15,12 +15,8 @@ module ActiveRecordUpsert
           }
         }
 
-        # When a migration adds a column to a table, the upsert will start
-        # returning the new attribute, and assign_attributes will fail,
-        # because Rails doesn't know about it yet (until the app is restarted).
-        #
-        # This checks that only known attributes are being assigned.
-        assign_attributes(values.first.to_h.slice(*self.attributes.keys))
+        @attributes = self.class.attributes_builder.build_from_database(values.first.to_h)
+
         self
       end
 
