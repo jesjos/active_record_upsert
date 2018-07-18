@@ -11,6 +11,16 @@ module ActiveRecord
         record.upsert
       end
 
+      it 'updates the attribute before calling after callbacks' do
+        MyRecord.create(id: 'some_id', name: 'Some name')
+
+        allow(record).to receive(:after_s) { expect(record.name).to eq('Some name') }
+        allow(record).to receive(:after_c) { expect(record.name).to eq('Some name') }
+        allow(record).to receive(:after_com) { expect(record.name).to eq('Some name') }
+
+        record.upsert
+      end
+
       context 'when the record does not exist' do
         it 'sets timestamps' do
           record.upsert
