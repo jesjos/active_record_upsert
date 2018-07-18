@@ -113,6 +113,33 @@ module ActiveRecord
       end
     end
 
+    describe '#upsert_operation' do
+      let(:attributes) { { id: 1 } }
+
+      context 'when no upsert has been tried' do
+        it 'returns nil' do
+          record = MyRecord.new(attributes)
+          expect(record.upsert_operation).to_not be
+        end
+      end
+
+      context 'when the record does not exist' do
+        it 'returns create' do
+          record = MyRecord.upsert(attributes)
+          expect(record.upsert_operation).to eq(:create)
+        end
+      end
+
+      context 'when the record already exists' do
+        before { MyRecord.create(attributes) }
+
+        it 'returns update' do
+          record = MyRecord.upsert(attributes)
+          expect(record.upsert_operation).to eq(:update)
+        end
+      end
+    end
+
     describe '.upsert' do
       context 'when the record already exists' do
         let(:key) { 1 }

@@ -32,6 +32,12 @@ module ActiveRecordUpsert
         values
       end
 
+      def upsert_operation
+        created_record = self['_upsert_created_record']
+        return if created_record.nil?
+        created_record ? :create : :update
+      end
+
       module ClassMethods
         def upsert!(attributes, arel_condition: nil, validate: true, &block)
           if attributes.is_a?(Array)
