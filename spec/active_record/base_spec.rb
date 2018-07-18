@@ -11,6 +11,16 @@ module ActiveRecord
         record.upsert
       end
 
+      it 'updates the attribute before calling after callbacks' do
+        MyRecord.create(id: 'some_id', name: 'Some name')
+
+        allow(record).to receive(:after_s) { expect(record.name).to eq('Some name') }
+        allow(record).to receive(:after_c) { expect(record.name).to eq('Some name') }
+        allow(record).to receive(:after_com) { expect(record.name).to eq('Some name') }
+
+        record.upsert
+      end
+
       context 'when the record does not exist' do
         it 'sets timestamps' do
           record.upsert
@@ -103,6 +113,33 @@ module ActiveRecord
       end
     end
 
+    describe '#upsert_operation' do
+      let(:attributes) { { id: 1 } }
+
+      context 'when no upsert has been tried' do
+        it 'returns nil' do
+          record = MyRecord.new(attributes)
+          expect(record.upsert_operation).to_not be
+        end
+      end
+
+      context 'when the record does not exist' do
+        it 'returns create' do
+          record = MyRecord.upsert(attributes)
+          expect(record.upsert_operation).to eq(:create)
+        end
+      end
+
+      context 'when the record already exists' do
+        before { MyRecord.create(attributes) }
+
+        it 'returns update' do
+          record = MyRecord.upsert(attributes)
+          expect(record.upsert_operation).to eq(:update)
+        end
+      end
+    end
+
     describe '.upsert' do
       context 'when the record already exists' do
         let(:key) { 1 }
@@ -142,6 +179,14 @@ module ActiveRecord
           record = MyRecord.create(name: 'somename', wisdom: 1)
           MyRecord.create(name: 'other', wisdom: 2)
           expect { MyRecord.upsert(id: record.id, wisdom: 2) }.to raise_error(ActiveRecord::RecordNotUnique)
+        end
+      end
+
+      context 'when updating attributes from the database' do
+        it 'does not call setter methods' do
+          record = MyRecord.new(name: 'somename', wisdom: 1)
+          expect(record).to_not receive(:name=).with('somename')
+          record.upsert
         end
       end
     end

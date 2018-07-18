@@ -5,7 +5,7 @@ module ActiveRecordUpsert
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
         validate == false || perform_validations || raise_validation_error
-        values = run_callbacks(:save) {
+        run_callbacks(:save) {
           run_callbacks(:create) {
             attributes ||= changed
             attributes = attributes +
@@ -15,12 +15,6 @@ module ActiveRecordUpsert
           }
         }
 
-        # When a migration adds a column to a table, the upsert will start
-        # returning the new attribute, and assign_attributes will fail,
-        # because Rails doesn't know about it yet (until the app is restarted).
-        #
-        # This checks that only known attributes are being assigned.
-        assign_attributes(values.first.to_h.slice(*self.attributes.keys))
         self
       end
 
@@ -33,8 +27,15 @@ module ActiveRecordUpsert
       def _upsert_record(upsert_attribute_names = changed, arel_condition = nil)
         existing_attributes = attributes_with_values_for_create(self.attributes.keys)
         values = self.class._upsert_record(existing_attributes, upsert_attribute_names, [arel_condition].compact)
+        @attributes = self.class.attributes_builder.build_from_database(values.first.to_h)
         @new_record = false
         values
+      end
+
+      def upsert_operation
+        created_record = self['_upsert_created_record']
+        return if created_record.nil?
+        created_record ? :create : :update
       end
 
       module ClassMethods
