@@ -9,6 +9,9 @@ class Vehicle < ApplicationRecord
 
   validates :name, presence: true
 
+  attribute :license, :string, default: 'Unknown'
+  belongs_to :account
+
   def before_s
   end
 
