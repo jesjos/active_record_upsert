@@ -7,5 +7,7 @@ class CreateAccounts < ActiveRecord::Migration[5.0]
     end
 
      add_index :accounts, :name, unique: true, where: "active IS TRUE"
+
+     add_reference :vehicles, :account
   end
 end

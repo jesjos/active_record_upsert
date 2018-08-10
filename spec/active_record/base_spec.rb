@@ -174,6 +174,17 @@ module ActiveRecord
         end
       end
 
+      context 'with assocations' do
+        let!(:existing) { Vehicle.create!(make: 'Make', name: 'Name') }
+        let(:account) { Account.create! }
+
+        it 'updates the foreign keys' do
+          expect {
+            Vehicle.upsert!(make: existing.make, name: existing.name, account: account)
+          }.to change { existing.reload.account_id }.from(nil).to(account.id)
+        end
+      end
+
       context 'when another index violation is made' do
         it 'raises an error' do
           record = MyRecord.create(name: 'somename', wisdom: 1)

@@ -57,11 +57,17 @@ module ActiveRecordUpsert
 
         def _upsert_record(existing_attributes, upsert_attributes_names, wheres) # :nodoc:
           upsert_keys = self.upsert_keys || [primary_key]
-          upsert_attributes_names = (upsert_attributes_names - [*upsert_keys, 'created_at'])
-          values_for_upsert = existing_attributes.select { |(name, _value)| upsert_attributes_names.include?(name) }
+          upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
 
-          upsert_attributes_names = upsert_attributes_names & column_names
-          existing_attributes = existing_attributes.slice(*column_names)
+          existing_attributes = existing_attributes
+            .transform_keys { |name| _prepare_column(name) }
+            .reject { |key, _| key.nil? }
+
+          upsert_attributes_names = upsert_attributes_names
+            .map { |name| _prepare_column(name) }
+            .compact
+
+          values_for_upsert = existing_attributes.select { |(name, _value)| upsert_attributes_names.include?(name) }
 
           insert_manager = arel_table.compile_upsert(
             upsert_keys,
@@ -72,6 +78,16 @@ module ActiveRecordUpsert
           )
 
           connection.upsert(insert_manager, "#{self} Upsert")
+        end
+
+        def _prepare_column(column)
+          column = attribute_alias(column) if attribute_alias?(column)
+
+          if columns_hash.key?(column)
+            column
+          elsif reflections.key?(column)
+            reflections[column].foreign_key
+          end
         end
 
         def upsert_keys(*keys)
