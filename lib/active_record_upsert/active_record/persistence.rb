@@ -57,8 +57,11 @@ module ActiveRecordUpsert
 
         def _upsert_record(existing_attributes, upsert_attributes_names, wheres) # :nodoc:
           upsert_keys = self.upsert_keys || [primary_key]
-          upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
+          upsert_attributes_names = (upsert_attributes_names - [*upsert_keys, 'created_at'])
           values_for_upsert = existing_attributes.select { |(name, _value)| upsert_attributes_names.include?(name) }
+
+          upsert_attributes_names = upsert_attributes_names & column_names
+          existing_attributes = existing_attributes.slice(*column_names)
 
           insert_manager = arel_table.compile_upsert(
             upsert_keys,
