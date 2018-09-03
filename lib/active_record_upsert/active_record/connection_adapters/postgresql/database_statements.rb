@@ -9,7 +9,7 @@ module ActiveRecordUpsert
           end
 
           def exec_upsert(sql, name, binds)
-            exec_query("#{sql} RETURNING *, (xmax::text::int = 0) AS _upsert_created_record", name, binds)
+            exec_query("#{sql} RETURNING *, (xmax = 0) AS _upsert_created_record", name, binds)
           end
         end
       end
