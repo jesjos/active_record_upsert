@@ -9,7 +9,7 @@ gemfile:
 - Gemfile.rails-5-0
 - Gemfile.rails-master
 rvm:
-- 2.3.1
+- 2.4.1
 before_script:
 - createdb --echo -U postgres upsert_test
 - psql -U postgres upsert_test < spec/dummy/db/structure.sql
