@@ -17,6 +17,13 @@ module ActiveRecord
           expect(record.created_at).not_to be_nil
           expect(record.updated_at).not_to be_nil
         end
+
+        it 'sets id' do
+          record.wheels_count = 1
+          expect(record.id).to be_nil
+          record.upsert(attributes: [:wheels_count])
+          expect(record.id).not_to be_nil
+        end
       end
 
       context 'when the record already exists' do
