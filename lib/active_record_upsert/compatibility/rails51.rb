@@ -6,6 +6,7 @@ module ActiveRecordUpsert
         existing_attributes = arel_attributes_with_values_for_create(self.class.column_names)
         values = self.class.unscoped.upsert(existing_attributes, upsert_attribute_names, [arel_condition].compact)
         @new_record = false
+        @attributes = self.class.attributes_builder.build_from_database(values.first.to_h)
         values
       end
     end
