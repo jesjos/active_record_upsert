@@ -2,10 +2,20 @@ module ActiveRecordUpsert
   module ActiveRecord
     module PersistenceExtensions
       def _upsert_record(upsert_attribute_names = changed, arel_condition = nil)
-        existing_attributes = arel_attributes_with_values_for_create(self.attributes.keys)
+        upsert_attribute_names = upsert_attribute_names.map { |name| _prepare_column(name) } & self.class.column_names
+        existing_attributes = arel_attributes_with_values_for_create(self.class.column_names)
         values = self.class.unscoped.upsert(existing_attributes, upsert_attribute_names, [arel_condition].compact)
         @new_record = false
+        @attributes = self.class.attributes_builder.build_from_database(values.first.to_h)
         values
+      end
+
+      def _prepare_column(name)
+        if self.class.reflections.key?(name)
+          self.class.reflections[name].foreign_key
+        else
+          name
+        end
       end
     end
 
@@ -20,8 +30,10 @@ module ActiveRecordUpsert
         on_conflict_binds = binds.select(&upsert_keys_filter)
         vals_for_upsert = substitutes.select { |s| upsert_keys_filter.call(s.first) }
 
+        target = arel_table[upsert_options.key?(:literal) ? ::Arel::Nodes::SqlLiteral.new(upsert_options[:literal]) : upsert_keys.join(',')]
+
         on_conflict_do_update = ::Arel::OnConflictDoUpdateManager.new
-        on_conflict_do_update.target = arel_table[upsert_keys.join(',')]
+        on_conflict_do_update.target = target
         on_conflict_do_update.target_condition = self.klass.upsert_options[:where]
         on_conflict_do_update.wheres = wheres
         on_conflict_do_update.set(vals_for_upsert)
