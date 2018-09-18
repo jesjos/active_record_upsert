@@ -18,7 +18,7 @@ addons:
   postgresql: '9.5'
 matrix:
   allow_failures:
-    - env: RAILS_VERSION=master
+    - gemfile: Gemfile.rails-master
 deploy:
   provider: rubygems
   api_key:
