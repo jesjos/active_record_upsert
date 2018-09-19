@@ -18,7 +18,7 @@ Real upsert for PostgreSQL 9.5+ and Rails 5 / ActiveRecord 5. Uses [ON CONFLICT 
 
 ## Prerequisites
 
-- PostgreSQL 9.5+
+- PostgreSQL 9.5+ (that's when UPSERT support was added; see Wikipedia's [PostgreSQL Release History](https://en.wikipedia.org/wiki/PostgreSQL#Release_history))
 - ActiveRecord ~> 5
 - For MRI: pg
 
