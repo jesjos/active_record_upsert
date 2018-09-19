@@ -2,10 +2,6 @@
 [![Build Status](https://travis-ci.org/jesjos/active_record_upsert.svg?branch=master)](https://travis-ci.org/jesjos/active_record_upsert)
 [![Code Climate](https://codeclimate.com/github/jesjos/active_record_upsert/badges/gpa.svg)](https://codeclimate.com/github/jesjos/active_record_upsert)
 
-# NB: INCOMPATIBILITY
-
-Due to a broken build matrix, v0.9.2 and v0.9.3 are incompatible with Rails < 5.2.1. v0.9.4 fixed this issue.
-
 # ActiveRecordUpsert
 
 Real upsert for PostgreSQL 9.5+ and Rails 5 / ActiveRecord 5. Uses [ON CONFLICT DO UPDATE](http://www.postgresql.org/docs/9.5/static/sql-insert.html).
@@ -23,6 +19,11 @@ Real upsert for PostgreSQL 9.5+ and Rails 5 / ActiveRecord 5. Uses [ON CONFLICT 
 - For MRI: pg
 
 - For JRuby: No support
+
+### NB: Releases to avoid
+
+Due to a broken build matrix, v0.9.2 and v0.9.3 are incompatible with Rails
+< 5.2.1. v0.9.4 fixed this issue.
 
 ## Installation
 
