@@ -3,7 +3,8 @@
 [![Code Climate](https://codeclimate.com/github/jesjos/active_record_upsert/badges/gpa.svg)](https://codeclimate.com/github/jesjos/active_record_upsert)
 
 # NB: INCOMPATIBILITY
-B/c of a broken build matrix, versions 0.9.2 - 0.9.3 are incompatible with rails < 5.2.1!
+
+Due to a broken build matrix, v0.9.2 and v0.9.3 are incompatible with Rails < 5.2.1. v0.9.4 fixed this issue.
 
 # ActiveRecordUpsert
 
