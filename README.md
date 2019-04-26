@@ -4,7 +4,7 @@
 
 # ActiveRecordUpsert
 
-Real upsert for PostgreSQL 9.5+ and Rails 5 / ActiveRecord 5. Uses [ON CONFLICT DO UPDATE](http://www.postgresql.org/docs/9.5/static/sql-insert.html).
+Real upsert for PostgreSQL 9.5+ and Rails 5+ / ActiveRecord 5+. Uses [ON CONFLICT DO UPDATE](http://www.postgresql.org/docs/9.5/static/sql-insert.html).
 
 ## Main points
 
@@ -15,7 +15,7 @@ Real upsert for PostgreSQL 9.5+ and Rails 5 / ActiveRecord 5. Uses [ON CONFLICT 
 ## Prerequisites
 
 - PostgreSQL 9.5+ (that's when UPSERT support was added; see Wikipedia's [PostgreSQL Release History](https://en.wikipedia.org/wiki/PostgreSQL#Release_history))
-- ActiveRecord ~> 5
+- ActiveRecord >= 5
 - For MRI: pg
 
 - For JRuby: No support
@@ -190,3 +190,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Daniel Cooper ([@danielcooper](https://github.com/danielcooper))
 - Laurent Vallar ([@val](https://github.com/val))
 - Emmanuel Quentin ([@manuquentin](https://github.com/manuquentin))
+- Jeff Wallace ([@tjwallace](https://github.com/tjwallace))
