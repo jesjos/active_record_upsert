@@ -4,12 +4,15 @@ language: ruby
 cache:
   bundler: true
 gemfile:
+- Gemfile.rails-6-0
 - Gemfile.rails-5-2
 - Gemfile.rails-5-1
 - Gemfile.rails-5-0
 - Gemfile.rails-master
 rvm:
-- 2.4.1
+- 2.4.6
+- 2.5.5
+- 2.6.3
 before_script:
 - createdb --echo -U postgres upsert_test
 - psql -U postgres upsert_test < spec/dummy/db/structure.sql
@@ -17,6 +20,11 @@ before_install: gem install bundler
 addons:
   postgresql: '9.5'
 matrix:
+  exclude:
+    - rvm: 2.4.6
+      gemfile: Gemfile.rails-6-0
+    - rvm: 2.4.6
+      gemfile: Gemfile.rails-master
   allow_failures:
     - gemfile: Gemfile.rails-master
 deploy:

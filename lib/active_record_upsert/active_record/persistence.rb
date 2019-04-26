@@ -25,7 +25,8 @@ module ActiveRecordUpsert
       end
 
       def _upsert_record(upsert_attribute_names = changed, arel_condition = nil)
-        existing_attributes = attributes_with_values_for_create(self.attributes.keys)
+        existing_attribute_names = attributes_for_create(attributes.keys)
+        existing_attributes = attributes_with_values(existing_attribute_names)
         values = self.class._upsert_record(existing_attributes, upsert_attribute_names, [arel_condition].compact)
         @attributes = self.class.attributes_builder.build_from_database(values.first.to_h)
         @new_record = false
