@@ -49,6 +49,7 @@ module ActiveRecord
           expect(upserted.wheels_count).to eq(1)
         end
       end
+
       context 'different ways of setting keys' do
         let(:attrs) { {make: 'Ford', name: 'Focus', long_field: SecureRandom.uuid} }
         let!(:vehicule) { Vehicle.create(attrs) }
