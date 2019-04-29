@@ -125,7 +125,8 @@ CREATE TABLE vehicles (
     make character varying,
     long_field character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    year integer
 );
 
 
@@ -239,6 +240,20 @@ CREATE UNIQUE INDEX index_vehicles_on_md5_long_field ON vehicles USING btree (md
 
 
 --
+-- Name: index_vehicles_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicles_on_year ON vehicles USING btree (year);
+
+
+--
+-- Name: partial_index_vehicles_on_make_without_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX partial_index_vehicles_on_make_without_year ON vehicles USING btree (make) WHERE (year IS NULL);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -247,6 +262,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20160419103547'),
 ('20160419124138'),
-('20160419124140');
+('20160419124140'),
+('20190428142610');
 
 

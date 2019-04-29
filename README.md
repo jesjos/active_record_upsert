@@ -160,6 +160,24 @@ class Account < ApplicationRecord
 end
 ```
 
+Overriding the models' `upsert_keys` when calling `#upsert` or `.upsert`:
+
+```ruby
+  Account.upsert(attrs, opts: { upsert_keys: [:foo, :bar] })
+  # Or, on an instance:
+  account = Account.new(attrs)
+  account.upsert(opts: { upsert_keys: [:foo, :bar] })
+```
+
+Overriding the models' `upsert_options` (partial index) when calling `#upsert` or `.upsert`:
+
+```ruby
+  Account.upsert(attrs, opts: { upsert_options: { where: 'foo IS NOT NULL' } })
+  # Or, on an instance:
+  account = Account.new(attrs)
+  account.upsert(opts: { upsert_options: { where: 'foo IS NOT NULLL } })
+```
+
 ## Tests
 
 Make sure to have an upsert_test database:

@@ -1,7 +1,7 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module PersistenceExtensions
-      def upsert!(attributes: nil, arel_condition: nil, validate: true)
+      def upsert!(attributes: nil, arel_condition: nil, validate: true, opts: {})
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
         validate == false || perform_validations || raise_validation_error
@@ -11,7 +11,7 @@ module ActiveRecordUpsert
             attributes = attributes +
               timestamp_attributes_for_create_in_model +
               timestamp_attributes_for_update_in_model
-            _upsert_record(attributes.map(&:to_s).uniq, arel_condition)
+            _upsert_record(attributes.map(&:to_s).uniq, arel_condition, opts)
           }
         }
 
@@ -24,10 +24,10 @@ module ActiveRecordUpsert
         false
       end
 
-      def _upsert_record(upsert_attribute_names = changed, arel_condition = nil)
+      def _upsert_record(upsert_attribute_names = changed, arel_condition = nil, opts = {})
         existing_attribute_names = attributes_for_create(attributes.keys)
         existing_attributes = attributes_with_values(existing_attribute_names)
-        values = self.class._upsert_record(existing_attributes, upsert_attribute_names, [arel_condition].compact)
+        values = self.class._upsert_record(existing_attributes, upsert_attribute_names, [arel_condition].compact, opts)
         @attributes = self.class.attributes_builder.build_from_database(values.first.to_h)
         @new_record = false
         values
@@ -40,12 +40,12 @@ module ActiveRecordUpsert
       end
 
       module ClassMethods
-        def upsert!(attributes, arel_condition: nil, validate: true, &block)
+        def upsert!(attributes, arel_condition: nil, validate: true, opts: {}, &block)
           if attributes.is_a?(Array)
             attributes.collect { |hash| upsert(hash, &block) }
           else
             new(attributes, &block).upsert!(
-              attributes: attributes.keys, arel_condition: arel_condition, validate: validate
+              attributes: attributes.keys, arel_condition: arel_condition, validate: validate, opts: opts
             )
           end
         end
@@ -56,8 +56,9 @@ module ActiveRecordUpsert
           false
         end
 
-        def _upsert_record(existing_attributes, upsert_attributes_names, wheres) # :nodoc:
-          upsert_keys = self.upsert_keys || [primary_key]
+        def _upsert_record(existing_attributes, upsert_attributes_names, wheres, opts) # :nodoc:
+          upsert_keys = opts[:upsert_keys] || self.upsert_keys || [primary_key]
+          upsert_options = opts[:upsert_options] || self.upsert_options
           upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
 
           existing_attributes = existing_attributes
