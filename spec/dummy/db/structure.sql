@@ -146,7 +146,11 @@ CREATE TABLE public.vehicles (
     long_field character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+<<<<<<< HEAD
     account_id integer
+=======
+    year integer
+>>>>>>> Add upsert_keys and upsert_options as opts
 );
 
 
@@ -290,6 +294,20 @@ CREATE UNIQUE INDEX index_vehicles_on_md5_long_field ON public.vehicles USING bt
 
 
 --
+-- Name: index_vehicles_on_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vehicles_on_year ON vehicles USING btree (year);
+
+
+--
+-- Name: partial_index_vehicles_on_make_without_year; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX partial_index_vehicles_on_make_without_year ON vehicles USING btree (make) WHERE (year IS NULL);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -299,6 +317,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20160419103547'),
 ('20160419124138'),
 ('20160419124140'),
-('20191212121212');
+('20191212121212'),
+('20190428142610');
 
 
