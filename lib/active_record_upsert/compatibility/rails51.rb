@@ -43,7 +43,7 @@ module ActiveRecordUpsert
         insert_manager.on_conflict = on_conflict_do_update.to_node
         insert_manager.insert substitutes
 
-        @klass.connection.upsert(insert_manager, "#{self} Upsert", binds + on_conflict_binds)
+        @klass.connection.upsert(insert_manager, "#{@klass.name} Upsert", binds + on_conflict_binds)
       end
 
       ::ActiveRecord::Relation.include(self)
