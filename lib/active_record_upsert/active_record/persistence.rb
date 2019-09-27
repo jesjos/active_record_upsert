@@ -59,7 +59,8 @@ module ActiveRecordUpsert
         def _upsert_record(existing_attributes, upsert_attributes_names, wheres, opts) # :nodoc:
           upsert_keys = opts[:upsert_keys] || self.upsert_keys || [primary_key]
           upsert_options = opts[:upsert_options] || self.upsert_options
-          upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
+          create_only_attributes = Array(opts[:create_only]).map(&:to_s)
+          upsert_attributes_names = upsert_attributes_names - [*upsert_keys, *create_only_attributes, 'created_at']
 
           existing_attributes = existing_attributes
             .transform_keys { |name| _prepare_column(name) }
