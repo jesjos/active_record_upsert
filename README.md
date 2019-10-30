@@ -123,6 +123,32 @@ r = MyRecord.new(id: 1, name: 'bar')
 r.upsert!
 ```
 
+### Gotcha with database defaults
+
+When having a default in the database (e.g. for a table called hardwares)
+
+    ┌─────────┬─────────┬───────┬
+    │ Column  │ Type    │Default│
+    ├─────────┼─────────┼───────┼
+    │ id      │ integer │ ...
+    │ prio    │ integer │ 999
+
+and an existing entry with a non default value for prio like: 998 with id: 1, upserting like so:
+
+```ruby
+hw = { id: 1, prio: 999 }
+Hardware.new(prio: hw[:prio]).upsert
+
+```
+won't mention the prio column in the ON CONFLICT part resulting in no update. However, when upserting like so:
+
+```ruby
+Hardware.upsert(prio: hw[:prio]).id
+```
+
+will indeed update the record in the database (back to its default value).
+
+
 ### Conflict Clauses
 
 It's possible to specify which columns should be used for the conflict clause. **These must comprise a unique index in Postgres.**
