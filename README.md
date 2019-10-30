@@ -125,7 +125,9 @@ r.upsert!
 
 ### Gotcha with database defaults
 
-When having a default in the database (e.g. for a table called hardwares)
+When a table is defined with a database default for a field, this gotcha can occur when trying to explicitly upsert a record _to_ the default value (from a non-default value).
+
+**Example**: a table called `hardwares` has a `prio` column with a default value.
 
     ┌─────────┬─────────┬───────┬
     │ Column  │ Type    │Default│
@@ -133,21 +135,24 @@ When having a default in the database (e.g. for a table called hardwares)
     │ id      │ integer │ ...
     │ prio    │ integer │ 999
 
-and an existing entry with a non default value for prio like: 998 with id: 1, upserting like so:
+And `hardwares` has a record with a non-default value for `prio`. Say, the record with `id` 1 has a `prio` of `998`. 
+
+In this situation, upserting like:
 
 ```ruby
 hw = { id: 1, prio: 999 }
 Hardware.new(prio: hw[:prio]).upsert
-
 ```
-won't mention the prio column in the ON CONFLICT part resulting in no update. However, when upserting like so:
+
+will not mention the `prio` column in the `ON CONFLICT` clause, resulting in no update.
+
+However, upserting like so:
 
 ```ruby
 Hardware.upsert(prio: hw[:prio]).id
 ```
 
-will indeed update the record in the database (back to its default value).
-
+will indeed update the record in the database back to its default value, `999`.
 
 ### Conflict Clauses
 
