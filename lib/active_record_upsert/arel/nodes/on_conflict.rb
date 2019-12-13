@@ -1,7 +1,7 @@
 module Arel
   module Nodes
     class OnConflict < Node
-      attr_accessor :target, :where, :action
+      attr_accessor :target, :where, :constraint, :action
 
       def initialize
         super
