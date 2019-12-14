@@ -8,6 +8,7 @@ module Arel
         @target = nil
         @action = nil
         @where = nil
+        @constraint = nil
       end
 
       def hash

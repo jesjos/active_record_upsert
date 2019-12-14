@@ -35,6 +35,7 @@ module ActiveRecordUpsert
         on_conflict_do_update = ::Arel::OnConflictDoUpdateManager.new
         on_conflict_do_update.target = target
         on_conflict_do_update.target_condition = self.klass.upsert_options[:where]
+        on_conflict_do_update.target_constraint = self.klass.upsert_options[:constraint]
         on_conflict_do_update.wheres = wheres
         on_conflict_do_update.set(vals_for_upsert)
 
