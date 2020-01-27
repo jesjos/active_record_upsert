@@ -7,5 +7,7 @@ class CreateDefaultingRecords < ActiveRecord::Migration[5.2]
       t.string :name
       t.timestamps
     end
+    
+    add_index :defaulting_records, :name, unique: true
   end
 end
