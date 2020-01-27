@@ -1,0 +1,2 @@
+class DefaultingRecord < ApplicationRecord
+end
