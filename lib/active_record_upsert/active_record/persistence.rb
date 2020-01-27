@@ -67,8 +67,6 @@ module ActiveRecordUpsert
             .transform_keys { |name| _prepare_column(name) }
             .reject { |key, _| key.nil? }
 
-          puts "existing_attributes: #{existing_attributes}"
-
           upsert_attributes_names = upsert_attributes_names
             .map { |name| _prepare_column(name) }
             .compact
