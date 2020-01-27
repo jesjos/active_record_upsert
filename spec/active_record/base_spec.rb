@@ -66,6 +66,27 @@ module ActiveRecord
             expect(upserted.name).to eq(nil)
           end
         end
+
+        context 'with opts' do
+          let(:attrs) { {make: 'Ford', name: 'Focus', year: 2017 } }
+          let!(:vehicle) { Vehicle.create(attrs) }
+
+          context 'with upsert_keys' do
+            it 'allows upsert_keys to be set when #upsert is called' do
+              upserted = Vehicle.new({ make: 'Volkswagen', name: 'Golf', year: attrs[:year] })
+              expect { upserted.upsert(opts: { upsert_keys: [:year] }) }.not_to change { Vehicle.count }.from(1)
+              expect(upserted.id).to eq(vehicle.id)
+            end
+          end
+
+          context 'with upsert_options' do
+            it 'allows upsert_options to be set when #upsert is called' do
+              upserted = Vehicle.new({ make: attrs[:make], name: 'GT', wheels_count: 4 })
+              expect { upserted.upsert(opts: { upsert_keys: [:make], upsert_options: { where: 'year IS NULL' } }) }.to change { Vehicle.count }.from(1).to(2)
+              expect(upserted.id).not_to eq(vehicle.id)
+            end
+          end
+        end
       end
 
       context 'when the record is not new' do
@@ -170,6 +191,25 @@ module ActiveRecord
               MyRecord.upsert(attributes, arel_condition: MyRecord.arel_table[:wisdom].lt(3))
             }.to change { existing.reload.wisdom }.to(nil)
             expect(existing.reload.updated_at).to be > existing_updated_at
+          end
+        end
+
+        context 'with opts' do
+          let(:attrs) { {make: 'Ford', name: 'Focus', year: 2017 } }
+          let!(:vehicle) { Vehicle.create(attrs) }
+
+          context 'with upsert_keys' do
+            it 'allows upsert_keys to be set when .upsert is called' do
+              expect { Vehicle.upsert({ make: 'Volkswagen', name: 'Golf', year: attrs[:year] }, opts: { upsert_keys: [:year] }) }.not_to change { Vehicle.count }.from(1)
+              expect(vehicle.reload.make).to eq('Volkswagen')
+            end
+          end
+
+          context 'with upsert_options' do
+            it 'allows upsert_options to be set when #upsert is called' do
+              expect { Vehicle.upsert({ make: attrs[:make], name: 'GT', wheels_count: 4 }, opts: { upsert_keys: [:make], upsert_options: { where: 'year IS NULL' } }) }.to change { Vehicle.count }.from(1).to(2)
+              expect(vehicle.reload.wheels_count).to be_nil
+            end
           end
         end
       end
