@@ -60,8 +60,10 @@ module ActiveRecordUpsert
           upsert_keys = opts[:upsert_keys] || self.upsert_keys || [primary_key]
           upsert_options = opts[:upsert_options] || self.upsert_options
           upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
-
+          upsert_excluded_keys = upsert_options[:exclude]&.map(&:to_s) || []
+          
           existing_attributes = existing_attributes
+            .except(*upsert_excluded_keys)
             .transform_keys { |name| _prepare_column(name) }
             .reject { |key, _| key.nil? }
 
