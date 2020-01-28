@@ -9,6 +9,20 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: pgcrypto; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pgcrypto; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -90,6 +104,72 @@ CREATE SEQUENCE public.constraint_examples_id_seq
 --
 
 ALTER SEQUENCE public.constraint_examples_id_seq OWNED BY public.constraint_examples.id;
+
+
+--
+-- Name: defaulting_constraint_examples; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.defaulting_constraint_examples (
+    id integer NOT NULL,
+    name character varying,
+    age integer,
+    color uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: defaulting_constraint_examples_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.defaulting_constraint_examples_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: defaulting_constraint_examples_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.defaulting_constraint_examples_id_seq OWNED BY public.defaulting_constraint_examples.id;
+
+
+--
+-- Name: defaulting_records; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.defaulting_records (
+    id bigint NOT NULL,
+    uuid uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: defaulting_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.defaulting_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: defaulting_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.defaulting_records_id_seq OWNED BY public.defaulting_records.id;
 
 
 --
@@ -186,6 +266,20 @@ ALTER TABLE ONLY public.constraint_examples ALTER COLUMN id SET DEFAULT nextval(
 
 
 --
+-- Name: defaulting_constraint_examples id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.defaulting_constraint_examples ALTER COLUMN id SET DEFAULT nextval('public.defaulting_constraint_examples_id_seq'::regclass);
+
+
+--
+-- Name: defaulting_records id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.defaulting_records ALTER COLUMN id SET DEFAULT nextval('public.defaulting_records_id_seq'::regclass);
+
+
+--
 -- Name: my_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -221,6 +315,30 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.constraint_examples
     ADD CONSTRAINT constraint_examples_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: defaulting_constraint_examples defaulting_constraint_examples_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.defaulting_constraint_examples
+    ADD CONSTRAINT defaulting_constraint_examples_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: defaulting_records defaulting_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.defaulting_records
+    ADD CONSTRAINT defaulting_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: defaulting_constraint_examples my_defaulting_unique_constraint; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.defaulting_constraint_examples
+    ADD CONSTRAINT my_defaulting_unique_constraint UNIQUE (name, age);
 
 
 --
@@ -260,6 +378,13 @@ ALTER TABLE ONLY public.vehicles
 --
 
 CREATE UNIQUE INDEX index_accounts_on_name ON public.accounts USING btree (name) WHERE (active IS TRUE);
+
+
+--
+-- Name: index_defaulting_records_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_defaulting_records_on_name ON public.defaulting_records USING btree (name);
 
 
 --
@@ -315,6 +440,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20160419124138'),
 ('20160419124140'),
 ('20190428142610'),
-('20191212121212');
+('20191212121212'),
+('20200127225354'),
+('20200128003633');
 
 

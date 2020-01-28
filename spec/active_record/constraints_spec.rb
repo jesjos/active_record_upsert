@@ -46,6 +46,16 @@ module ActiveRecord
           expect { record.upsert }.to raise_error(RecordSavedError)
         end
       end
+      
+      context 'when the record excludes keys' do
+        let(:attrs) { {name: 'John', age: '14'} }
+        
+        it 'allows upsert' do
+          record = DefaultingConstraintExample.new(attrs)
+          record.upsert(opts: {constraint: 'my_defaulting_unique_constraint'})
+          expect(record.id).not_to be_nil
+        end
+      end
     end
   end
 end
