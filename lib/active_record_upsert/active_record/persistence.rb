@@ -59,6 +59,7 @@ module ActiveRecordUpsert
         def _upsert_record(existing_attributes, upsert_attributes_names, wheres, opts) # :nodoc:
           upsert_keys = opts[:upsert_keys] || self.upsert_keys || [primary_key]
           upsert_options = opts[:upsert_options] || self.upsert_options
+          upsert_options[:constraint] = opts[:constraint] unless opts[:constraint].nil?
           upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
           upsert_excluded_keys = upsert_options[:exclude]&.map(&:to_s) || []
           
