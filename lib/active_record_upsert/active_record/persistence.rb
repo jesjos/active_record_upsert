@@ -5,15 +5,17 @@ module ActiveRecordUpsert
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
         validate == false || perform_validations || raise_validation_error
-        run_callbacks(:save) {
-          run_callbacks(:create) {
-            attributes ||= changed
-            attributes = attributes +
-              timestamp_attributes_for_create_in_model +
-              timestamp_attributes_for_update_in_model
-            _upsert_record(attributes.map(&:to_s).uniq, arel_condition, opts)
-          }
-        }
+        run_callbacks(:commit) do
+          run_callbacks(:save) do
+            run_callbacks(:create) do
+              attributes ||= changed
+              attributes = attributes +
+                timestamp_attributes_for_create_in_model +
+                timestamp_attributes_for_update_in_model
+              _upsert_record(attributes.map(&:to_s).uniq, arel_condition, opts)
+            end
+          end
+        end
 
         self
       end
@@ -41,13 +43,24 @@ module ActiveRecordUpsert
 
       module ClassMethods
         def upsert!(attributes, arel_condition: nil, validate: true, opts: {}, &block)
-          if attributes.is_a?(Array)
-            attributes.collect { |hash| upsert(hash, &block) }
-          else
-            new(attributes, &block).upsert!(
-              attributes: attributes.keys, arel_condition: arel_condition, validate: validate, opts: opts
-            )
+          results = transaction do
+            [attributes].flatten.map do |hash|
+              instance = make_instance(hash, &block)
+              instance.upsert!(
+                attributes: attributes.keys,
+                arel_condition: arel_condition,
+                validate: validate,
+                opts: opts,
+                &block
+              )
+            end
           end
+          results.each { |i| i.run_callbacks(:commit) }
+          results.length > 1 ? results : results.first
+        end
+
+        def make_instance(attributes, **options, &block)
+          new(attributes, &block)
         end
 
         def upsert(*args)
