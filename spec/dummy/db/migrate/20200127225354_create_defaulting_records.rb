@@ -1,4 +1,4 @@
-class CreateDefaultingRecords < ActiveRecord::Migration[5.2]
+class CreateDefaultingRecords < ActiveRecord::Migration[5.0]
   def change
     enable_extension 'pgcrypto' unless extension_enabled?('pgcrypto')
 
