@@ -4,6 +4,7 @@ language: ruby
 cache:
   bundler: true
 gemfile:
+- Gemfile.rails-6-1
 - Gemfile.rails-6-0
 - Gemfile.rails-5-2
 - Gemfile.rails-5-1
@@ -21,6 +22,8 @@ addons:
   postgresql: '9.5'
 matrix:
   exclude:
+    - rvm: 2.4.6
+      gemfile: Gemfile.rails-6-1
     - rvm: 2.4.6
       gemfile: Gemfile.rails-6-0
     - rvm: 2.4.6
