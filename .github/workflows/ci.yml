@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [$default-branches]
+  push:
+    branches: [$default-branch]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        images: postgres
+        env:
+          POSTGRES_DB: upsert_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby-version: [2.5.x, 2.6.x, 2.7.x]
+        gemfile: [Gemfile, Gemfile.rails-master, Gemfile.rails-6-1, Gemfile.rails-5-2, Gemfile.rails-5-1, Gemfile.rails-5-0]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare database
+        run: |
+          createdb --echo -U $POSTGRES_USER $POSTGRES_DB
+          psql -U $POSTGRES_USER $POSTGRES_DB < spec/dummy/db/structure.sql
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+        env:
+          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+
+      - name: Run Tests
+        run: bundle exec rake spec
