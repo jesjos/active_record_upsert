@@ -11,6 +11,10 @@ module Arel
     def target_condition= where
       @ast.where = where
     end
+    
+    def target_constraint= constraint
+      @ast.constraint = constraint
+    end
 
     def target= column
       @ast.target = column

@@ -18,6 +18,7 @@ module Arel
 
       on_conflict_do_update.target = target
       on_conflict_do_update.target_condition = upsert_options[:where]
+      on_conflict_do_update.target_constraint = upsert_options[:constraint]
       on_conflict_do_update.wheres = wheres
       on_conflict_do_update.set(upsert_values)
 
