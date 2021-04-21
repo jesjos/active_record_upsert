@@ -241,3 +241,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Emmanuel Quentin ([@manuquentin](https://github.com/manuquentin))
 - Jeff Wallace ([@tjwallace](https://github.com/tjwallace))
 - Kirill Zaitsev ([@Bugagazavr](https://github.com/Bugagazavr))
+- Nick Campbell ([@nickcampbell18](https://github.com/nickcampbell18))
