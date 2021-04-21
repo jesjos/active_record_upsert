@@ -33,6 +33,12 @@ module ActiveRecord
           record.upsert(attributes: [:id, :name])
           expect(record.reload.wisdom).to eq(3)
         end
+
+        it 'clears any changes state on the instance' do
+          record.upsert
+          expect(record.changes).to be_empty
+          expect(record.changed?).to be false
+        end
       end
 
       context 'when the record already exists' do
@@ -57,6 +63,13 @@ module ActiveRecord
           upserted = MyRecord.new(id: key)
           upserted.upsert
           expect(upserted.name).to eq('somename')
+        end
+
+        it 'clears any changes' do
+          upserted = MyRecord.new(id: key, name: 'other')
+          upserted.upsert
+          expect(upserted.changes).to be_empty
+          expect(upserted.changed?).to be false
         end
 
         context 'when specifying attributes' do
