@@ -25,7 +25,9 @@ module ActiveRecordUpsert
       end
 
       def _upsert_record(upsert_attribute_names = changed, arel_condition = nil, opts = {})
-        existing_attribute_names = attributes_for_create(attributes.keys)
+        attribute_keys = attributes.keys
+        attribute_keys -= opts[:exclude].map(&:to_s) if opts.has_key? :exclude
+        existing_attribute_names = attributes_for_create(attribute_keys)
         existing_attributes = attributes_with_values(existing_attribute_names)
         values = self.class._upsert_record(existing_attributes, upsert_attribute_names, [arel_condition].compact, opts)
         @attributes = self.class.attributes_builder.build_from_database(values.first.to_h)
@@ -60,9 +62,12 @@ module ActiveRecordUpsert
         def _upsert_record(existing_attributes, upsert_attributes_names, wheres, opts) # :nodoc:
           upsert_keys = opts[:upsert_keys] || self.upsert_keys || [primary_key]
           upsert_options = opts[:upsert_options] || self.upsert_options
+          upsert_options[:constraint] = opts[:constraint] unless opts[:constraint].nil?
           upsert_attributes_names = upsert_attributes_names - [*upsert_keys, 'created_at']
-
+          upsert_excluded_keys = upsert_options[:exclude]&.map(&:to_s) || []
+          
           existing_attributes = existing_attributes
+            .except(*upsert_excluded_keys)
             .transform_keys { |name| _prepare_column(name) }
             .reject { |key, _| key.nil? }
 

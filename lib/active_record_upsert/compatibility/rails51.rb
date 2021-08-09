@@ -22,10 +22,13 @@ module ActiveRecordUpsert
 
     module RelationExtensions
       def upsert(existing_attributes, upsert_attributes, wheres, opts) # :nodoc:
-        substitutes, binds = substitute_values(existing_attributes)
         upsert_keys = opts[:upsert_keys] || self.klass.upsert_keys || [primary_key]
         upsert_options = opts[:upsert_options] || self.klass.upsert_options
-
+        upsert_options[:constraint] = opts[:constraint] unless opts[:constraint].nil?
+        upsert_excluded_keys = upsert_options[:exclude]&.map(&:to_s) || []
+        existing_attributes.select!{|attr, _| !upsert_excluded_keys.include? attr.name}
+        substitutes, binds = substitute_values(existing_attributes)
+        
         upsert_attributes = upsert_attributes - [*upsert_keys, 'created_at']
         upsert_keys_filter = ->(o) { upsert_attributes.include?(o.name) }
 
@@ -37,6 +40,7 @@ module ActiveRecordUpsert
         on_conflict_do_update = ::Arel::OnConflictDoUpdateManager.new
         on_conflict_do_update.target = target
         on_conflict_do_update.target_condition = upsert_options[:where]
+        on_conflict_do_update.target_constraint = upsert_options[:constraint]
         on_conflict_do_update.wheres = wheres
         on_conflict_do_update.set(vals_for_upsert)
 

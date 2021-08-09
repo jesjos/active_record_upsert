@@ -1,13 +1,14 @@
 module Arel
   module Nodes
     class OnConflict < Node
-      attr_accessor :target, :where, :action
+      attr_accessor :target, :where, :constraint, :action
 
       def initialize
         super
         @target = nil
         @action = nil
         @where = nil
+        @constraint = nil
       end
 
       def hash
