@@ -12,11 +12,6 @@ module ActiveRecordUpsert
               timestamp_attributes_for_create_in_model +
               timestamp_attributes_for_update_in_model
             _upsert_record(attributes.map(&:to_s).uniq, arel_condition, opts)
-            
-            case upsert_operation
-            when :create then run_callback(:after_create)
-            when :update then run_callback(:after_update)
-            end
           end
         end
 
