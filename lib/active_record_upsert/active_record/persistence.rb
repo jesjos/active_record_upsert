@@ -7,12 +7,17 @@ module ActiveRecordUpsert
         validate == false || perform_validations || raise_validation_error
         run_callbacks(:commit) do
           run_callbacks(:save) do
-            run_callbacks(:create) do
+            run_callbacks(:upsert) do
               attributes ||= changed
               attributes = attributes +
                 timestamp_attributes_for_create_in_model +
                 timestamp_attributes_for_update_in_model
               _upsert_record(attributes.map(&:to_s).uniq, arel_condition, opts)
+            end
+            
+            case upsert_operation
+            when :create then run_callback(:after_create)
+            when :update then run_callback(:after_update)
             end
           end
         end
@@ -55,7 +60,7 @@ module ActiveRecordUpsert
               )
             end
           end
-          results.each { |i| i.run_callbacks(:commit) }
+          
           results.length > 1 ? results : results.first
         end
 
