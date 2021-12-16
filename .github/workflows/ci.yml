@@ -36,7 +36,7 @@ jobs:
 
       - name: Prepare database
         run: |
-          psql -U $POSTGRES_USER -h localhost -p 5432 $POSTGRES_DB < spec/dummy/db/structure.sql
+          psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB < spec/dummy/db/structure.sql
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
