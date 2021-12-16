@@ -36,6 +36,9 @@ jobs:
           - ruby-version: 2.7
             gemfile: Gemfile.rails-master
             experimental: true
+          - ruby-version: 2.7
+            gemfile: Gemfile.rails-7-0
+            experimental: true
 
     steps:
       - uses: actions/checkout@v2
