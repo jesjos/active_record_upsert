@@ -6,6 +6,10 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      POSTGRES_DB: upsert_test
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
     services:
       postgres:
         image: postgres
