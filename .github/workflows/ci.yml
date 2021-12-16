@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [2.5.x, 2.6.x, 2.7.x]
+        ruby-version: [2.5, 2.6, 2.7]
         gemfile: [Gemfile, Gemfile.rails-master, Gemfile.rails-6-1, Gemfile.rails-5-2, Gemfile.rails-5-1, Gemfile.rails-5-0]
 
     steps:
