@@ -10,6 +10,7 @@ jobs:
       POSTGRES_DB: upsert_test
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
+    continue-on-error: ${{ matrix.experimental }}
     services:
       postgres:
         image: postgres
@@ -29,7 +30,12 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version: [2.5, 2.6, 2.7]
-        gemfile: [Gemfile.rails-master, Gemfile.rails-6-1, Gemfile.rails-5-2, Gemfile.rails-5-1, Gemfile.rails-5-0]
+        gemfile: [Gemfile.rails-6-1, Gemfile.rails-5-2, Gemfile.rails-5-1, Gemfile.rails-5-0]
+        experimental: [false]
+        include:
+          - ruby-version: 2.7
+            gemfile: Gemfile.rails-master
+            experimental: true
 
     steps:
       - uses: actions/checkout@v2
