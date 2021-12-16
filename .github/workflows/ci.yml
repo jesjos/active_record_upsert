@@ -36,7 +36,6 @@ jobs:
 
       - name: Prepare database
         run: |
-          createdb --echo -U $POSTGRES_USER $POSTGRES_DB
           psql -U $POSTGRES_USER $POSTGRES_DB < spec/dummy/db/structure.sql
 
       - name: Set up Ruby
