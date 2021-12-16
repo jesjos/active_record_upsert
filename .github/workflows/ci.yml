@@ -52,4 +52,5 @@ jobs:
 
       - name: Run Tests
         run: |
+          export DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB
           bundle exec rake spec
