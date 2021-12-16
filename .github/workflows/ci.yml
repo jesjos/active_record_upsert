@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        images: postgres
+        image: postgres
         env:
           POSTGRES_DB: upsert_test
           POSTGRES_PASSWORD: postgres
