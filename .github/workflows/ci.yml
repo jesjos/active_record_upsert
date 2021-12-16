@@ -1,18 +1,19 @@
 name: CI
 
-on:
-  pull_request:
-    branches: [$default-branches]
-  push:
-    branches: [$default-branch]
+on: [pull_request, push]
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      POSTGRES_DB: upsert_test
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    continue-on-error: ${{ matrix.experimental }}
     services:
       postgres:
-        images: postgres
+        image: postgres
         env:
           POSTGRES_DB: upsert_test
           POSTGRES_PASSWORD: postgres
@@ -28,24 +29,34 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [2.5.x, 2.6.x, 2.7.x]
-        gemfile: [Gemfile, Gemfile.rails-master, Gemfile.rails-6-1, Gemfile.rails-5-2, Gemfile.rails-5-1, Gemfile.rails-5-0]
+        ruby-version: [2.5, 2.6, 2.7]
+        gemfile: [Gemfile.rails-6-1, Gemfile.rails-5-2, Gemfile.rails-5-1, Gemfile.rails-5-0]
+        experimental: [false]
+        include:
+          - ruby-version: 2.7
+            gemfile: Gemfile.rails-master
+            experimental: true
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Prepare database
         run: |
-          createdb --echo -U $POSTGRES_USER $POSTGRES_DB
-          psql -U $POSTGRES_USER $POSTGRES_DB < spec/dummy/db/structure.sql
+          psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB < spec/dummy/db/structure.sql
+
+      - name: Copy over Gemfile
+        env:
+          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+        run: |
+          mv $BUNDLE_GEMFILE Gemfile
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
-        env:
-          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
 
       - name: Run Tests
-        run: bundle exec rake spec
+        run: |
+          export DATABASE_URL=postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB
+          bundle exec rake spec
