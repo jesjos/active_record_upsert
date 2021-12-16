@@ -38,13 +38,18 @@ jobs:
         run: |
           psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB < spec/dummy/db/structure.sql
 
+      - name: Copy over Gemfile
+        env:
+          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+        run: |
+          mv $BUNDLE_GEMFILE Gemfile
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
-        env:
-          BUNDLE_GEMFILE: ${{ matrix.gemfile }}
 
       - name: Run Tests
-        run: bundle exec rake spec
+        run: |
+          bundle exec rake spec
