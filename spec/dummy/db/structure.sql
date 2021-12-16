@@ -126,7 +126,8 @@ CREATE TABLE vehicles (
     long_field character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    year integer
+    year integer,
+    account_id integer
 );
 
 
