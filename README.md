@@ -242,3 +242,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 - Jeff Wallace ([@tjwallace](https://github.com/tjwallace))
 - Kirill Zaitsev ([@Bugagazavr](https://github.com/Bugagazavr))
 - Nick Campbell ([@nickcampbell18](https://github.com/nickcampbell18))
+- Mikhail Doronin ([@misdoro](https://github.com/misdoro))
