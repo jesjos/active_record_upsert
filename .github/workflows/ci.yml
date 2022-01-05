@@ -30,22 +30,21 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version: [2.6, 2.7, "3.0"]
-        gemfile: [Gemfile.rails-6-1, Gemfile.rails-5-2, Gemfile.rails-5-1, Gemfile.rails-5-0]
+        gemfile: [Gemfile.rails-5-2, Gemfile.rails-6-0, Gemfile.rails-6-1]
         experimental: [false]
         include:
-          - ruby-version: "3.0"
-            gemfile: Gemfile.rails-master
-            experimental: true
+          - ruby-version: 2.7
+            gemfile: Gemfile.rails-7-0
+            experimental: false
           - ruby-version: "3.0"
             gemfile: Gemfile.rails-7-0
+            experimental: false
+          - ruby-version: "3.0"
+            gemfile: Gemfile.rails-master
             experimental: true
         exclude:
           - ruby-version: "3.0" # https://github.com/rails/rails/issues/40938
             gemfile: Gemfile.rails-5-2
-          - ruby-version: "3.0" # https://github.com/rails/rails/issues/40938
-            gemfile: Gemfile.rails-5-1
-          - ruby-version: "3.0" # https://github.com/rails/rails/issues/40938
-            gemfile: Gemfile.rails-5-0
 
     steps:
       - uses: actions/checkout@v2
