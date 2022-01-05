@@ -42,13 +42,13 @@ module ActiveRecordUpsert
     end
 
     module TransactionsExtensions
-      def upsert(*args)
+      def upsert(*args, **kwargs)
         with_transaction_returning_status { super }
       end
     end
 
     module ConnectAdapterExtension
-      def upsert(*args)
+      def upsert(*args, **kwargs)
         ::ActiveRecord::Base.clear_query_caches_for_current_thread
         super
       end

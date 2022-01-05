@@ -18,8 +18,8 @@ module ActiveRecordUpsert
         self
       end
 
-      def upsert(*args)
-        upsert!(*args)
+      def upsert(**kwargs)
+        upsert!(**kwargs)
       rescue ::ActiveRecord::RecordInvalid
         false
       end
@@ -51,8 +51,8 @@ module ActiveRecordUpsert
           end
         end
 
-        def upsert(*args)
-          upsert!(*args)
+        def upsert(attributes, **kwargs, &block)
+          upsert!(attributes, **kwargs, &block)
         rescue ::ActiveRecord::RecordInvalid
           false
         end

@@ -128,13 +128,13 @@ module ActiveRecord
 
         context 'when the record matches the partial index' do
           it 'raises an error' do
-            expect{ Account.upsert!(name: 'somename', active: true) }.not_to change{ Account.count }.from(1)
+            expect{ Account.upsert!({ name: 'somename', active: true }) }.not_to change{ Account.count }.from(1)
           end
         end
 
         context 'when the record does meet the where clause' do
           it 'raises an error' do
-            expect{ Account.upsert!(name: 'somename', active: false) }.to change{ Account.count }.from(1).to(2)
+            expect{ Account.upsert!({ name: 'somename', active: false }) }.to change{ Account.count }.from(1).to(2)
           end
         end
       end
@@ -233,7 +233,7 @@ module ActiveRecord
 
         it 'updates the foreign keys' do
           expect {
-            Vehicle.upsert!(make: existing.make, name: existing.name, account: account)
+            Vehicle.upsert!({ make: existing.make, name: existing.name, account: account })
           }.to change { existing.reload.account_id }.from(nil).to(account.id)
         end
       end
@@ -242,7 +242,7 @@ module ActiveRecord
         it 'raises an error' do
           record = MyRecord.create(name: 'somename', wisdom: 1)
           MyRecord.create(name: 'other', wisdom: 2)
-          expect { MyRecord.upsert(id: record.id, wisdom: 2) }.to raise_error(ActiveRecord::RecordNotUnique)
+          expect { MyRecord.upsert({ id: record.id, wisdom: 2 }) }.to raise_error(ActiveRecord::RecordNotUnique)
         end
       end
 
@@ -257,7 +257,7 @@ module ActiveRecord
 
     describe '.upsert!' do
       it 'raises ActiveRecord::RecordInvalid if the object is invalid' do
-        expect { Vehicle.upsert!(wheels_count: 4) }.to raise_error(ActiveRecord::RecordInvalid)
+        expect { Vehicle.upsert!({ wheels_count: 4 }) }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
   end
