@@ -16,7 +16,7 @@ module ActiveRecord
       end
 
       it 'emits an ActiveSupport notification with an appropriate name' do
-        MyRecord.upsert(wisdom: 2)
+        MyRecord.upsert({ wisdom: 2 })
 
         payload = events[-1][-1]
         expect(payload[:name]).to eq('MyRecord Upsert')
