@@ -4,7 +4,7 @@
 
 # ActiveRecordUpsert
 
-Real upsert for PostgreSQL 9.5+ and Rails 5+ / ActiveRecord 5+. Uses [ON CONFLICT DO UPDATE](http://www.postgresql.org/docs/9.5/static/sql-insert.html).
+Real upsert for PostgreSQL 9.5+ and Rails 5.2+ / ActiveRecord 5.2+. Uses [ON CONFLICT DO UPDATE](http://www.postgresql.org/docs/9.5/static/sql-insert.html).
 
 ## Main points
 
@@ -15,7 +15,7 @@ Real upsert for PostgreSQL 9.5+ and Rails 5+ / ActiveRecord 5+. Uses [ON CONFLIC
 ## Prerequisites
 
 - PostgreSQL 9.5+ (that's when UPSERT support was added; see Wikipedia's [PostgreSQL Release History](https://en.wikipedia.org/wiki/PostgreSQL#Release_history))
-- ActiveRecord >= 5
+- ActiveRecord >= 5.2
 - Ruby MRI, with the `pg` gem
 - _JRuby is currently not supported_
 
@@ -23,6 +23,11 @@ Real upsert for PostgreSQL 9.5+ and Rails 5+ / ActiveRecord 5+. Uses [ON CONFLIC
 
 Due to a broken build matrix, v0.9.2 and v0.9.3 are incompatible with Rails
 < 5.2.1. [v0.9.4](https://github.com/jesjos/active_record_upsert/releases/tag/v0.9.4) fixed this issue.
+
+### Supported Rails versions
+
+This library is compatible with all major Rails versions covered by the Rails
+["Severe Security Issues" maintenance policy](https://guides.rubyonrails.org/maintenance_policy.html).
 
 ### Supported Ruby versions
 
