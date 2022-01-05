@@ -16,14 +16,22 @@ Real upsert for PostgreSQL 9.5+ and Rails 5+ / ActiveRecord 5+. Uses [ON CONFLIC
 
 - PostgreSQL 9.5+ (that's when UPSERT support was added; see Wikipedia's [PostgreSQL Release History](https://en.wikipedia.org/wiki/PostgreSQL#Release_history))
 - ActiveRecord >= 5
-- For MRI: pg
-
-- For JRuby: No support
+- Ruby MRI, with the `pg` gem
+- _JRuby is currently not supported_
 
 ### NB: Releases to avoid
 
 Due to a broken build matrix, v0.9.2 and v0.9.3 are incompatible with Rails
 < 5.2.1. [v0.9.4](https://github.com/jesjos/active_record_upsert/releases/tag/v0.9.4) fixed this issue.
+
+### Supported Ruby versions
+
+This library may be compatible with older versions of Ruby, however we only run automated
+tests using the
+[officially supported Ruby versions](https://www.ruby-lang.org/en/downloads/branches/).
+
+Please note that Ruby 3.1 is not currently tested because it is incompatible with Rails
+`7.0.0`, `6.1.4.4`, `6.0.4.4` and `5.2.6` ([issue](https://github.com/rails/rails/issues/43998)).
 
 ## Installation
 
@@ -135,7 +143,7 @@ When a table is defined with a database default for a field, this gotcha can occ
     │ id      │ integer │ ...
     │ prio    │ integer │ 999
 
-And `hardwares` has a record with a non-default value for `prio`. Say, the record with `id` 1 has a `prio` of `998`. 
+And `hardwares` has a record with a non-default value for `prio`. Say, the record with `id` 1 has a `prio` of `998`.
 
 In this situation, upserting like:
 
