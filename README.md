@@ -239,7 +239,7 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos
 ## Contributors
 
 - Jesper Josefsson
-- Jens Nockert
+- Aurora Nockert
 - Olle Jonsson
 - Simon Dahlbacka
 - Paul Hoffer
