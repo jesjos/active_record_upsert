@@ -219,8 +219,23 @@ Overriding the models' `upsert_options` (partial index) when calling `#upsert` o
   Account.upsert(attrs, opts: { upsert_options: { where: 'foo IS NOT NULL' } })
   # Or, on an instance:
   account = Account.new(attrs)
-  account.upsert(opts: { upsert_options: { where: 'foo IS NOT NULLL } })
+  account.upsert(opts: { upsert_options: { where: 'foo IS NOT NULL' } })
 ```
+
+## Comparing to native Rails Upsert
+
+Rails 6 (through this [PR](https://github.com/rails/rails/pull/35077)) added the ability to create or update individual records through `#insert` and `#upsert` and similarly the ability to create or update multiple records through `#insert_all` and `#upsert_all`. Here is a quick comparison of how the Rails native `ActiveRecord::Persistence#upsert` feature compares to what's offered in this gem:
+
+| Feature | `active_record_upsert` | Rails native `ActiveRecord::Persistence#upsert`
+|--|--|--|
+| Set model level conflict clause | Yes, through `#upsert_keys` | No, but can be passed in through the `:unique_by` option |
+| Ability to invoke validations and callbacks | Yes | No |
+| Automatically sets `created_at`/`updated_at` timestamps | Yes | Yes (Rails 7.0+) |
+| Checks for unique index on the database | No[^1] | Yes |
+| Use associations in upsert calls | Yes | No |
+| Return object type | Instantiated ActiveRecord model | `ActiveRecord::Result` |
+
+[^1]: Though the gem does not check for the index first, the upsert will still fail due to the database constraint.
 
 ## Tests
 
