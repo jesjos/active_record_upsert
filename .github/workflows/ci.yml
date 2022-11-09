@@ -40,7 +40,7 @@ jobs:
             gemfile: Gemfile.rails-7-0
             experimental: false
           - ruby-version: "3.0"
-            gemfile: Gemfile.rails-master
+            gemfile: Gemfile.rails-main
             experimental: true
         exclude:
           - ruby-version: "3.0" # https://github.com/rails/rails/issues/40938
