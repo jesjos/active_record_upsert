@@ -222,9 +222,11 @@ Overriding the models' `upsert_options` (partial index) when calling `#upsert` o
   account.upsert(opts: { upsert_options: { where: 'foo IS NOT NULL' } })
 ```
 
-## Comparing to native Rails Upsert
+## Comparing to native Rails 6 Upsert
 
-Rails 6 (through this [PR](https://github.com/rails/rails/pull/35077)) added the ability to create or update individual records through `#insert` and `#upsert` and similarly the ability to create or update multiple records through `#insert_all` and `#upsert_all`. Here is a quick comparison of how the Rails native `ActiveRecord::Persistence#upsert` feature compares to what's offered in this gem:
+Rails 6 (via the ["Add insert_many to ActiveRecord models" PR #35077](https://github.com/rails/rails/pull/35077)) added the ability to create or update individual records through `#insert` and `#upsert` and similarly the ability to create or update multiple records through `#insert_all` and `#upsert_all`.
+
+Here is a quick comparison of how the Rails native `ActiveRecord::Persistence#upsert` feature compares to what's offered in this gem:
 
 | Feature | `active_record_upsert` | Rails native `ActiveRecord::Persistence#upsert`
 |--|--|--|
