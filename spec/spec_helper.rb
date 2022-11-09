@@ -12,14 +12,20 @@ require File.expand_path('../../spec/dummy/config/environment.rb', __FILE__)
 
 RSpec.configure do |config|
   config.disable_monkey_patching!
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
+  if Rails.version.is_a?(String) && Rails.version.chars.first.to_i < 6
+    config.before(:suite) do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.clean_with(:truncation)
+    end
 
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
+    config.around(:each) do |example|
+      DatabaseCleaner.cleaning do
+        example.run
+      end
+    end
+  else
+    config.after do
+      ActiveRecord::Tasks::DatabaseTasks.truncate_all
     end
   end
 end
