@@ -19,6 +19,12 @@ Real upsert for PostgreSQL 9.5+ and Rails 5.2+ / ActiveRecord 5.2+. Uses [ON CON
 - Ruby MRI, with the `pg` gem
 - _JRuby is currently not supported_
 
+## Alternatives
+
+This library was written at a time in history when Rails did not support any `#upsert` method.
+
+Instead of using this library, if you are using a current version of Rails, you may want to [use its  `#upsert`](https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-upsert). You may want to investigate how [newer PostgreSQL versions support `MERGE` statement](https://www.postgresql.org/docs/current/sql-merge.html).
+
 ### NB: Releases to avoid
 
 Due to a broken build matrix, v0.9.2 and v0.9.3 are incompatible with Rails
