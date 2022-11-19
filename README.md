@@ -35,8 +35,7 @@ This library may be compatible with older versions of Ruby, however we only run 
 tests using the
 [officially supported Ruby versions](https://www.ruby-lang.org/en/downloads/branches/).
 
-Please note that Ruby 3.1 is not currently tested because it is incompatible with Rails
-`7.0.0`, `6.1.4.4`, `6.0.4.4` and `5.2.6` ([issue](https://github.com/rails/rails/issues/43998)).
+Please note that Ruby 3.1 is only supported on Rails => 7.0.1
 
 ## Installation
 
