@@ -1,0 +1,5 @@
+group :development, :test do
+  gem 'rails', '~> 7.0', '>= 7.0.1' # 7.0.1 is the first version compatible with ruby 3.1
+end
+
+eval_gemfile "#{__dir__}/Gemfile.base"

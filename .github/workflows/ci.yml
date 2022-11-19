@@ -29,11 +29,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby-version: [2.6, 2.7, "3.0"]
+        ruby-version: ["2.6", "2.7", "3.0"]
         gemfile: [Gemfile.rails-5-2, Gemfile.rails-6-0, Gemfile.rails-6-1]
         experimental: [false]
         include:
-          - ruby-version: 2.7
+          - ruby-version: "2.7"
             gemfile: Gemfile.rails-7-0
             experimental: false
           - ruby-version: "3.0"
@@ -41,6 +41,9 @@ jobs:
             experimental: false
           - ruby-version: "3.0"
             gemfile: Gemfile.rails-main
+            experimental: true
+          - ruby-version: "3.1"
+            gemfile: Gemfile.rails-7-0-ruby-3-1
             experimental: true
         exclude:
           - ruby-version: "3.0" # https://github.com/rails/rails/issues/40938
