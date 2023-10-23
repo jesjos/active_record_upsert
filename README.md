@@ -23,7 +23,7 @@ Real upsert for PostgreSQL 9.5+ and Rails 5.2+ / ActiveRecord 5.2+. Uses [ON CON
 
 This library was written at a time in history when Rails did not support any `#upsert` method.
 
-Instead of using this library, if you are using a current version of Rails, you may want to [use its  `#upsert`](https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-upsert). You may want to investigate how [newer PostgreSQL versions support `MERGE` statement](https://www.postgresql.org/docs/current/sql-merge.html).
+Instead of using this library, if you are using a current version of Rails, you may want to [use its `#upsert`](https://api.rubyonrails.org/classes/ActiveRecord/Persistence/ClassMethods.html#method-i-upsert). You may want to investigate how [newer PostgreSQL versions support `MERGE` statement](https://www.postgresql.org/docs/current/sql-merge.html).
 
 ### NB: Releases to avoid
 
@@ -32,16 +32,11 @@ Due to a broken build matrix, v0.9.2 and v0.9.3 are incompatible with Rails
 
 ### Supported Rails versions
 
-This library is compatible with all major Rails versions covered by the Rails
-["Severe Security Issues" maintenance policy](https://guides.rubyonrails.org/maintenance_policy.html).
+This library is compatible with all major Rails versions covered by the Rails ["Severe Security Issues" maintenance policy](https://guides.rubyonrails.org/maintenance_policy.html).
 
 ### Supported Ruby versions
 
-This library may be compatible with older versions of Ruby, however we only run automated
-tests using the
-[officially supported Ruby versions](https://www.ruby-lang.org/en/downloads/branches/).
-
-Please note that Ruby 3.1 is only supported on Rails => 7.0.1
+This library may be compatible with older versions of Ruby, however we only run automated tests using the [officially supported Ruby versions](https://www.ruby-lang.org/en/downloads/branches/).
 
 ## Installation
 
@@ -53,17 +48,21 @@ gem 'active_record_upsert'
 
 And then execute:
 
-    $ bundle
+```console
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install active_record_upsert
+```console
+gem install active_record_upsert
+```
 
 ## Usage
 
 ### Create
 
-Use `ActiveRecord.upsert` or `ActiveRecord#upsert`. *ActiveRecordUpsert* respects timestamps.
+Use `ActiveRecord.upsert` or `ActiveRecord#upsert`. _ActiveRecordUpsert_ respects timestamps.
 
 ```ruby
 class MyRecord < ActiveRecord::Base
@@ -89,8 +88,7 @@ If you need to specify a condition for the update, pass it as an Arel query:
 MyRecord.upsert({id: 1, wisdom: 3}, arel_condition: MyRecord.arel_table[:updated_at].lt(1.day.ago))
 ```
 
-The instance method `#upsert` can also take keyword arguments to specify a condition, or to limit which attributes to upsert
-(by default, all `changed` attributes will be passed to the upsert):
+The instance method `#upsert` can also take keyword arguments to specify a condition, or to limit which attributes to upsert (by default, all `changed` attributes will be passed to the upsert):
 
 ```ruby
 r = MyRecord.new(id: 1)
@@ -103,8 +101,7 @@ r.upsert(attributes: [:name], arel_condition: MyRecord.arel_table[:updated_at].l
 
 ### Create with specific Attributes
 
-If you want to create a record with the specific attributes, but update only a limited set of attributes,
-similar to how `ActiveRecord::Base.create_with` works, you can do the following:
+If you want to create a record with the specific attributes, but update only a limited set of attributes, similar to how `ActiveRecord::Base.create_with` works, you can do the following:
 
 ```ruby
 existing_record = MyRecord.create(id: 1, name: 'lemon', color: 'green')
@@ -126,16 +123,19 @@ MyRecord.create_with(name: 'banana').find_or_initialize_by(id: 2).update(color: 
 ### Validations
 
 Upsert will perform validation on the object, and return false if it is not valid. To skip validation, pass `validate: false`:
+
 ```ruby
 MyRecord.upsert({id: 1, wisdom: 3}, validate: false)
 ```
 
 If you want validations to raise `ActiveRecord::RecordInvalid`, use `upsert!`:
+
 ```ruby
 MyRecord.upsert!(id: 1, wisdom: 3)
 ```
 
 Or using the instance method:
+
 ```ruby
 r = MyRecord.new(id: 1, name: 'bar')
 r.upsert!
@@ -147,11 +147,13 @@ When a table is defined with a database default for a field, this gotcha can occ
 
 **Example**: a table called `hardwares` has a `prio` column with a default value.
 
-    ┌─────────┬─────────┬───────┬
-    │ Column  │ Type    │Default│
-    ├─────────┼─────────┼───────┼
-    │ id      │ integer │ ...
-    │ prio    │ integer │ 999
+```text
+┌─────────┬─────────┬─────────┬
+│ Column  │ Type    │ Default │
+├─────────┼─────────┼─────────┼
+│ id      │ integer │ ...
+│ prio    │ integer │ 999
+```
 
 And `hardwares` has a record with a non-default value for `prio`. Say, the record with `id` 1 has a `prio` of `998`.
 
@@ -233,14 +235,14 @@ Rails 6 (via the ["Add insert_many to ActiveRecord models" PR #35077](https://gi
 
 Here is a quick comparison of how the Rails native `ActiveRecord::Persistence#upsert` feature compares to what's offered in this gem:
 
-| Feature | `active_record_upsert` | Rails native `ActiveRecord::Persistence#upsert`
-|--|--|--|
-| Set model level conflict clause | Yes, through `#upsert_keys` | No, but can be passed in through the `:unique_by` option |
-| Ability to invoke validations and callbacks | Yes | No |
-| Automatically sets `created_at`/`updated_at` timestamps | Yes | Yes (Rails 7.0+) |
-| Checks for unique index on the database | No[^1] | Yes |
-| Use associations in upsert calls | Yes | No |
-| Return object type | Instantiated ActiveRecord model | `ActiveRecord::Result` |
+| Feature                                                 | `active_record_upsert`          | Rails native `ActiveRecord::Persistence#upsert`          |
+| ------------------------------------------------------- | ------------------------------- | -------------------------------------------------------- |
+| Set model level conflict clause                         | Yes, through `#upsert_keys`     | No, but can be passed in through the `:unique_by` option |
+| Ability to invoke validations and callbacks             | Yes                             | No                                                       |
+| Automatically sets `created_at`/`updated_at` timestamps | Yes                             | Yes (Rails 7.0+)                                         |
+| Checks for unique index on the database                 | No[^1]                          | Yes                                                      |
+| Use associations in upsert calls                        | Yes                             | No                                                       |
+| Return object type                                      | Instantiated ActiveRecord model | `ActiveRecord::Result`                                   |
 
 [^1]: Though the gem does not check for the index first, the upsert will still fail due to the database constraint.
 
@@ -256,7 +258,7 @@ Then run `rspec`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/jesjos/active_record_upsert.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/jesjos/active_record_upsert>.
 
 ## Contributors
 
