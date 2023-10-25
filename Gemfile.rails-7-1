@@ -1,5 +1,5 @@
 group :development, :test do
-  gem 'rails', '~> 7.0.0'
+  gem 'rails', '~> 7.1.0'
 end
 
 eval_gemfile "#{__dir__}/Gemfile.base"

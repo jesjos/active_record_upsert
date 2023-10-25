@@ -21,6 +21,6 @@ Gem::Specification.new do |spec|
 
   spec.platform = Gem::Platform::RUBY
 
-  spec.add_runtime_dependency 'activerecord', '>= 5.2', '< 7.1'
+  spec.add_runtime_dependency 'activerecord', '>= 5.2', '< 7.2'
   spec.add_runtime_dependency 'pg', '>= 0.18', '< 2.0'
 end
