@@ -1,7 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/active_record_upsert.svg)](https://badge.fury.io/rb/active_record_upsert)
-[![Build Status](https://travis-ci.org/jesjos/active_record_upsert.svg?branch=master)](https://travis-ci.org/jesjos/active_record_upsert)
-[![Code Climate](https://codeclimate.com/github/jesjos/active_record_upsert/badges/gpa.svg)](https://codeclimate.com/github/jesjos/active_record_upsert)
-
+[![CI](https://github.com/jesjos/active_record_upsert/actions/workflows/ci.yml/badge.svg)](https://github.com/jesjos/active_record_upsert/actions/workflows/ci.yml)
 # ActiveRecordUpsert
 
 Real upsert for PostgreSQL 9.5+ and Rails 5.2+ / ActiveRecord 5.2+. Uses [ON CONFLICT DO UPDATE](http://www.postgresql.org/docs/9.5/static/sql-insert.html).
