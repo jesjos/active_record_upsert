@@ -149,8 +149,8 @@ When a table is defined with a database default for a field, this gotcha can occ
 ┌─────────┬─────────┬─────────┬
 │ Column  │ Type    │ Default │
 ├─────────┼─────────┼─────────┼
-│ id      │ integer │ ...
-│ prio    │ integer │ 999
+│ id      │ integer │ ...     |
+│ prio    │ integer │ 999     |
 ```
 
 And `hardwares` has a record with a non-default value for `prio`. Say, the record with `id` 1 has a `prio` of `998`.
