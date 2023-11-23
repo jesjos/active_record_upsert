@@ -2,13 +2,22 @@ module ActiveRecord
   RSpec.describe 'Base' do
     describe '#upsert' do
       let(:record) { MyRecord.new(id: 'some_id') }
-      it 'calls save/create/commit callbacks' do
+      it 'calls save/create/commit callbacks on #upsert' do
         expect(record).to receive(:before_s)
         expect(record).to receive(:after_s)
         expect(record).to receive(:after_c)
         expect(record).to receive(:before_c)
         expect(record).to receive(:after_com)
         record.upsert
+      end
+
+      it 'calls save/create/commit callbacks on #upsert!' do
+        expect(record).to receive(:before_s)
+        expect(record).to receive(:after_s)
+        expect(record).to receive(:after_c)
+        expect(record).to receive(:before_c)
+        expect(record).to receive(:after_com)
+        record.upsert!
       end
 
       it 'updates the attribute before calling after callbacks' do

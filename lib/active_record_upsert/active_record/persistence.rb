@@ -1,7 +1,17 @@
 module ActiveRecordUpsert
   module ActiveRecord
     module PersistenceExtensions
-      def upsert!(attributes: nil, arel_condition: nil, validate: true, opts: {})
+      def upsert!(**kwargs)
+        _upsert!(**kwargs)
+      end
+
+      def upsert(**kwargs)
+        _upsert!(**kwargs)
+      rescue ::ActiveRecord::RecordInvalid
+        false
+      end
+
+      def _upsert!(attributes: nil, arel_condition: nil, validate: true, opts: {})
         raise ::ActiveRecord::ReadOnlyRecord, "#{self.class} is marked as readonly" if readonly?
         raise ::ActiveRecord::RecordSavedError, "Can't upsert a record that has already been saved" if persisted?
         validate == false || perform_validations || raise_validation_error
@@ -16,12 +26,6 @@ module ActiveRecordUpsert
         }
 
         self
-      end
-
-      def upsert(**kwargs)
-        upsert!(**kwargs)
-      rescue ::ActiveRecord::RecordInvalid
-        false
       end
 
       def _upsert_record(upsert_attribute_names = changed, arel_condition = nil, opts = {})
@@ -45,7 +49,7 @@ module ActiveRecordUpsert
           if attributes.is_a?(Array)
             attributes.collect { |hash| upsert(hash, &block) }
           else
-            new(attributes, &block).upsert!(
+            new(attributes, &block)._upsert!(
               attributes: attributes.keys, arel_condition: arel_condition, validate: validate, opts: opts
             )
           end
