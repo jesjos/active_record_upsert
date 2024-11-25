@@ -54,6 +54,9 @@ jobs:
             gemfile: Gemfile.rails-7-2
             experimental: false
           - ruby-version: "3.3"
+            gemfile: Gemfile.rails-8-0
+            experimental: false
+          - ruby-version: "3.3"
             gemfile: Gemfile.rails-main
             experimental: true
 

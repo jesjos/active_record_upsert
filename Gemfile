@@ -1,1 +1,1 @@
-eval_gemfile "#{__dir__}/Gemfile.rails-7-2"
+eval_gemfile "#{__dir__}/Gemfile.rails-8-0"
