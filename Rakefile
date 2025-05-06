@@ -1,3 +1,4 @@
+require 'logger' # Fix concurrent-ruby removing logger dependency which Rails itself does not have
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 require 'active_record'
