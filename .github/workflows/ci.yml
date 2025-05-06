@@ -66,8 +66,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Ensure working RubyGems
-        run: gem update --system 3.2.3
       - name: Prepare database
         run: |
           psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB < spec/dummy/db/structure.sql
@@ -83,6 +81,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
+          rubygems: 3.2.3
 
       - name: Run Tests
         run: |
