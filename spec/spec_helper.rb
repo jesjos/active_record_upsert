@@ -1,5 +1,5 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'logger' # Fix concurrent-ruby removing logger dependency which Rails itself does not have
+require 'logger' # Fix concurrent-ruby removing "logger" dependency which Rails itself does not have
 require 'active_record'
 require 'database_cleaner'
 require 'securerandom'
