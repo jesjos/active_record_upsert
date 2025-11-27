@@ -45,6 +45,10 @@ module ActiveRecordUpsert
       def upsert(*args, **kwargs)
         with_transaction_returning_status { super }
       end
+
+      def upsert!(*args, **kwargs)
+        with_transaction_returning_status { super }
+      end
     end
 
     module ConnectAdapterExtension
