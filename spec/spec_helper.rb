@@ -29,4 +29,9 @@ RSpec.configure do |config|
       ActiveRecord::Tasks::DatabaseTasks.truncate_all
     end
   end
+
+  if ENV.key?('GITHUB_ACTIONS')
+    config.color = true
+    config.tty = true
+  end
 end

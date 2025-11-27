@@ -2,10 +2,11 @@ name: CI
 
 on:
   pull_request:
-    types: [ opened, reopened, synchronize ]
+    types: [opened, reopened, synchronize]
   push:
     branches:
-      - 'main'
+      - "main"
+  workflow_dispatch:
 
 jobs:
   test:
@@ -56,7 +57,10 @@ jobs:
           - ruby-version: "3.3"
             gemfile: Gemfile.rails-8-0
             experimental: false
-          - ruby-version: "3.3"
+          - ruby-version: "3.4"
+            gemfile: Gemfile.rails-8-1
+            experimental: false
+          - ruby-version: "3.4"
             gemfile: Gemfile.rails-main
             experimental: true
 

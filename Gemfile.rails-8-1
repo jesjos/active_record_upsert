@@ -1,0 +1,5 @@
+group :development, :test do
+gem 'rails', '~> 8.1.0'
+end
+
+eval_gemfile "#{__dir__}/Gemfile.base"
