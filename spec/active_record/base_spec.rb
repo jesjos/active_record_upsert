@@ -205,6 +205,15 @@ module ActiveRecord
             }.to change { existing.reload.wisdom }.to(nil)
             expect(existing.reload.updated_at).to be > existing_updated_at
           end
+
+          it 'return the existing record if the condition does not match' do
+            upsertable = MyRecord.new({ name: 'somename', wisdom: 2 })
+            upsertable.upsert(
+              arel_condition: MyRecord.arel_table[:id].eq(-1),
+              opts: { upsert_keys: [:wisdom] }
+            )
+            expect(upsertable.id).to eq(existing.id)
+          end
         end
 
         context 'with opts' do
