@@ -69,7 +69,7 @@ jobs:
             gemfile: Gemfile.rails-5-2
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Prepare database
         run: |
           psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/$POSTGRES_DB < spec/dummy/db/structure.sql
