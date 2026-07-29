@@ -80,7 +80,8 @@ module ActiveRecordUpsert
             wheres
           )
 
-          connection.upsert(insert_manager, "#{self} Upsert")
+          conn = respond_to?(:lease_connection) ? lease_connection : connection
+          conn.upsert(insert_manager, "#{self} Upsert")
         end
 
         def _prepare_column(column)
