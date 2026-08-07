@@ -1,3 +1,5 @@
-source 'https://rubygems.org'
+group :development, :test do
+  gem 'rails', '~> 8.0.0'
+end
 
-gemspec
+eval_gemfile "#{__dir__}/Gemfile.base"

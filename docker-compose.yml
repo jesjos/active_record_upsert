@@ -1,14 +1,26 @@
-version: '2'
 services:
   db:
-    image: postgres:9.5
+    image: postgres:17.2
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: always
     ports:
-      - "5432:5432"
+      - 5432:5432
+    volumes:
+      - database_data:/var/lib/postgresql/data
+
   app:
     environment:
-      - DATABASE_URL=postgresql://postgres@db/active_record_upsert_test
+      - POSTGRES_HOST_AUTH_METHOD='trust'
+      - PGHOST='db'
+      - PGDATABASE='activerecord_upsert_test'
     build: .
     depends_on:
       - db
     links:
       - db
+
+volumes:
+  database_data:
+    driver: local
+
